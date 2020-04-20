@@ -13,7 +13,7 @@ func draw_trail(t:Node2D) -> void:
 func _draw() -> void:
 	
 	# Background
-	draw_rect(Rect2(Vector2.ZERO, Game.screen_bounds.size), Color(0,0,0))
+	draw_rect(Game.screen_bounds, Color(0,0,0))
 	if Game.player.damaged:
 		get_material().set_shader_param("damaged", true)
 		#draw_rect(Rect2(Vector2.ZERO, Game.screen_bounds.size), Color(0.5,0,0))
@@ -40,4 +40,3 @@ func _draw() -> void:
 
 func _process(t) -> void:
 	update()
-	$'debug_label'.text = str(Engine.get_frames_per_second()) + ' FPS'

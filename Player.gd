@@ -15,10 +15,9 @@ func _process(t:float) -> void:
 		thrust_multiplier = 2.0
 	velocity = velocity.linear_interpolate(move_dir * thrust_multiplier, MOVEMENT_INTERPOLATION)
 	position += velocity
-	position.x = clamp(position.x, BORDER_SIZE, Game.screen_bounds.size.x - BORDER_SIZE)
-	position.y = clamp(position.y, BORDER_SIZE, Game.screen_bounds.size.y - BORDER_SIZE)
+	position.x = clamp(position.x, Game.screen_bounds.position.x + BORDER_SIZE, Game.screen_bounds.end.x - BORDER_SIZE)
+	position.y = clamp(position.y, Game.screen_bounds.position.y + BORDER_SIZE, Game.screen_bounds.end.y - BORDER_SIZE)
 
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
 	damaged = true
-	$'../notification'.text = "You were hit!"

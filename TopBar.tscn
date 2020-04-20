@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://FPS.gd" type="Script" id=1]
+[ext_resource path="res://img/topbar.png" type="Texture" id=2]
+
+[node name="TopBar" type="Node2D"]
+z_index = 1
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 960.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 2
+
+[node name="FPS" type="Label" parent="."]
+modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 112.0
+margin_bottom = 14.0
+text = "~~ FPS"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
