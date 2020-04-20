@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scene.gd" type="Script" id=1]
 [ext_resource path="res://Shooter.gd" type="Script" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://img/player.png" type="Texture" id=4]
 [ext_resource path="res://Trail.tscn" type="PackedScene" id=5]
 [ext_resource path="res://img/shooter.png" type="Texture" id=6]
-[ext_resource path="res://timekeep_start.gd" type="Script" id=7]
-[ext_resource path="res://timekeep_end.gd" type="Script" id=8]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -53,14 +51,4 @@ script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="Shooter"]
 texture = ExtResource( 6 )
-
-[node name="TimeKeeper" type="Node" parent="."]
-
-[node name="Start" type="Node" parent="TimeKeeper"]
-process_priority = -1
-script = ExtResource( 7 )
-
-[node name="End" type="Node" parent="TimeKeeper"]
-process_priority = 1
-script = ExtResource( 8 )
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_Area2D_area_entered"]

@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://FPS.gd" type="Script" id=1]
 [ext_resource path="res://img/topbar.png" type="Texture" id=2]
+[ext_resource path="res://timekeep_start.gd" type="Script" id=3]
+[ext_resource path="res://timekeep_end.gd" type="Script" id=4]
 
 [node name="TopBar" type="Node2D"]
 z_index = 1
@@ -12,13 +14,24 @@ margin_bottom = 40.0
 texture = ExtResource( 2 )
 expand = true
 stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="FPS" type="Label" parent="."]
+[node name="ProcessingTime" type="Node2D" parent="Background"]
+process_priority = 1
+script = ExtResource( 4 )
+
+[node name="StartTime" type="Node" parent="Background/ProcessingTime"]
+process_priority = -1
+script = ExtResource( 3 )
+
+[node name="FPS" type="Label" parent="Background"]
 modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 112.0
-margin_bottom = 14.0
+margin_bottom = 19.0
 text = "~~ FPS"
 script = ExtResource( 1 )
 __meta__ = {
