@@ -1,9 +1,24 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://FPS.gd" type="Script" id=1]
 [ext_resource path="res://img/topbar.png" type="Texture" id=2]
 [ext_resource path="res://timekeep_start.gd" type="Script" id=3]
 [ext_resource path="res://timekeep_end.gd" type="Script" id=4]
+[ext_resource path="res://LeftStickDisplay.gd" type="Script" id=5]
+[ext_resource path="res://img/player_projectile.png" type="Texture" id=6]
+[ext_resource path="res://img/stick_input_display_3.png" type="Texture" id=7]
+[ext_resource path="res://img/stick_input_display_2.png" type="Texture" id=8]
+[ext_resource path="res://img/energy_meter_empty.png" type="Texture" id=9]
+[ext_resource path="res://EnergyMeter.gd" type="Script" id=10]
+[ext_resource path="res://img/energy_meter_full.png" type="Texture" id=11]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 8 ), ExtResource( 7 ) ],
+"loop": false,
+"name": "default",
+"speed": 0.0
+} ]
 
 [node name="TopBar" type="Node2D"]
 z_index = 1
@@ -26,6 +41,21 @@ script = ExtResource( 4 )
 process_priority = -1
 script = ExtResource( 3 )
 
+[node name="ProcessLabel" type="Label" parent="Background/ProcessingTime"]
+modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 855.0
+margin_top = 5.0
+margin_right = 955.0
+margin_bottom = 19.0
+text = "0.0 ms"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="FPS" type="Label" parent="Background"]
 modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
 margin_left = 5.0
@@ -37,3 +67,23 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="InputDisplay" type="AnimatedSprite" parent="Background"]
+position = Vector2( 200, 20 )
+frames = SubResource( 1 )
+
+[node name="LeftStick" type="Sprite" parent="Background/InputDisplay"]
+texture = ExtResource( 6 )
+script = ExtResource( 5 )
+
+[node name="EnergyMeter" type="Sprite" parent="Background"]
+position = Vector2( 350, 20 )
+texture = ExtResource( 9 )
+script = ExtResource( 10 )
+
+[node name="Amount" type="Sprite" parent="Background/EnergyMeter"]
+texture = ExtResource( 11 )
+centered = false
+offset = Vector2( -100, -10 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 200, 20 )

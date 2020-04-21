@@ -21,22 +21,16 @@ func _draw() -> void:
 	else:
 		get_material().set_shader_param("damaged", false)
 	
-	# Player Trail
-	if Game.player.has_node('Trail'):
-		var t = Game.player.get_node('Trail')
-		draw_trail(t)
+#	# Player Trail
+#	if Game.player.has_node('Trail'):
+#		var t = Game.player.get_node('Trail')
+#		draw_trail(t)
 #
 #	for p in shooter.get_children():
 #		if p.has_node('Trail'):
 #			var t = p.get_node('Trail')
 #			draw_trail(t)
 #		draw_circle(p.global_position.round(), p.radius, p.color)
-		
-	# Shooter
-#	draw_circle(shooter.global_position.round(), 5.0, Color(1,0.2,0.2))
-#
-#	# Player
-#	draw_circle(Game.player.position.round(), 5.0, Color(1,1,1))
 
 func _process(t) -> void:
 	update()

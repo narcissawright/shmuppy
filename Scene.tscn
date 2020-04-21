@@ -41,6 +41,7 @@ texture = ExtResource( 4 )
 position = Vector2( 0, 0 )
 
 [node name="Area2D" type="Area2D" parent="Player"]
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Area2D"]
 shape = SubResource( 3 )
@@ -51,4 +52,6 @@ script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="Shooter"]
 texture = ExtResource( 6 )
+
+[node name="BulletHolder" type="Node2D" parent="."]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_Area2D_area_entered"]

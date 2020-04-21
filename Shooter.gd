@@ -6,12 +6,16 @@ const SHOT_FREQUENCY = 10
 var framecount:int = 0
 var projectile = preload("res://Projectile.tscn")
 
+var time_elapsed = 0.0
 
 func _process(t: float) -> void:
+	time_elapsed += t
 	framecount += 1
 	if framecount > SHOT_FREQUENCY:
 		framecount -= SHOT_FREQUENCY
 		shoot()
+		
+	position += Vector2.UP.rotated(time_elapsed)
 	
 func shoot():
 	var p = projectile.instance()
@@ -36,7 +40,7 @@ func shoot():
 	p.radius = 3.0
 	p.color = Color(1,0.2,0.2)
 	p.seek_amount = 0.0
-	p.position = Vector2.ZERO
+	p.position = position
 	
-	add_child(p)
+	$'../BulletHolder'.add_child(p)
 	

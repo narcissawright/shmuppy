@@ -1,27 +1,49 @@
 extends Node2D
 onready var start_node = $'StartTime'
+onready var process_label = $'ProcessLabel'
 var processing_history = []
 const LINE_MAX_HEIGHT = 40.0
 var usecs_finish = 0
 
-export var ENABLED:bool = false
+var average_size:int = 10
+var frame_average:Array = []
+var frame_counter:int = 0
+
+export var visualization_enabled:bool = false
 
 func _ready() -> void:
-	if !ENABLED:
-		set_process(false)
-		
-	for i in range (960):
-		processing_history.append(0)
+	if visualization_enabled:
+		for i in range (960):
+			processing_history.append(0)
 
 func _process(delta: float) -> void:
+	# Obtain the amount of usecs it took for all nodes to complete.
+	# This is obtainable thanks to node.process_priority
 	usecs_finish = OS.get_ticks_usec()
 	var frame_usecs = usecs_finish - start_node.usecs
-	processing_history.append(frame_usecs)
-	processing_history.remove(0)
-	update()
+	
+	# find the average over the last ten frames
+	frame_average.append(frame_usecs)
+	if frame_average.size() > average_size:
+		frame_average.remove(0)
+	frame_counter += 1
+	if frame_counter >= average_size:
+		frame_counter = 0
+		var total_t = 0
+		for t in frame_average:
+			total_t += t
+		total_t /= average_size
+		var ms = total_t / 1000.0
+		var ms_string:String = str(ms).pad_zeros(1).pad_decimals(1) + " ms"
+		process_label.text = ms_string
+		
+	if visualization_enabled:
+		processing_history.append(frame_usecs)
+		processing_history.remove(0)
+		update()
 	
 func _draw() -> void:
-	if !ENABLED:
+	if not visualization_enabled:
 		return
 	""" 
 	This is an expensive draw operation
