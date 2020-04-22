@@ -2,13 +2,11 @@ extends Node2D
 
 onready var player = $"Player"
 onready var shooter = $"Shooter"
+onready var bullet_holder = $'BulletHolder'
 
 func draw_trail(t:Node2D) -> void:
-	if t.data.size() > 1:
-		for i in range (t.data.size() - 1):
-			var darken_amount = 1.0 - (i / float(Game.MAX_TRAIL_LENGTH))
-			var i_color = t.color.darkened(darken_amount)
-			draw_line(t.data[i], t.data[i+1], i_color, t.width, true)
+	if t.positions.size() > 1:
+		draw_polyline_colors(t.positions, t.colors, t.width, false)
 
 func _draw() -> void:
 	
@@ -26,11 +24,10 @@ func _draw() -> void:
 		var t = Game.player.get_node('Trail')
 		draw_trail(t)
 #
-#	for p in shooter.get_children():
-#		if p.has_node('Trail'):
-#			var t = p.get_node('Trail')
-#			draw_trail(t)
-#		draw_circle(p.global_position.round(), p.radius, p.color)
+	for p in bullet_holder.get_children():
+		if p.has_node('Trail'):
+			var t = p.get_node('Trail')
+			draw_trail(t)
 
 func _process(t) -> void:
 	update()

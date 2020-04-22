@@ -1,20 +1,21 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://FPS.gd" type="Script" id=1]
-[ext_resource path="res://img/topbar.png" type="Texture" id=2]
-[ext_resource path="res://timekeep_start.gd" type="Script" id=3]
-[ext_resource path="res://timekeep_end.gd" type="Script" id=4]
-[ext_resource path="res://LeftStickDisplay.gd" type="Script" id=5]
-[ext_resource path="res://img/player_projectile.png" type="Texture" id=6]
-[ext_resource path="res://img/stick_input_display_3.png" type="Texture" id=7]
-[ext_resource path="res://img/stick_input_display_2.png" type="Texture" id=8]
-[ext_resource path="res://img/energy_meter_empty.png" type="Texture" id=9]
-[ext_resource path="res://EnergyMeter.gd" type="Script" id=10]
-[ext_resource path="res://img/energy_meter_full.png" type="Texture" id=11]
+[ext_resource path="res://code/FPS.gd" type="Script" id=1]
+[ext_resource path="res://code/timekeep_end.gd" type="Script" id=2]
+[ext_resource path="res://code/FrameDrops.gd" type="Script" id=3]
+[ext_resource path="res://code/LeftStickDisplay.gd" type="Script" id=4]
+[ext_resource path="res://code/EnergyMeter.gd" type="Script" id=5]
+[ext_resource path="res://code/timekeep_start.gd" type="Script" id=6]
+[ext_resource path="res://img/energy_meter_empty.png" type="Texture" id=7]
+[ext_resource path="res://img/player_projectile.png" type="Texture" id=8]
+[ext_resource path="res://img/stick_input_display_2.png" type="Texture" id=9]
+[ext_resource path="res://img/energy_meter_full.png" type="Texture" id=10]
+[ext_resource path="res://img/topbar.png" type="Texture" id=11]
+[ext_resource path="res://img/stick_input_display_3.png" type="Texture" id=12]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 8 ), ExtResource( 7 ) ],
+"frames": [ ExtResource( 9 ), ExtResource( 12 ) ],
 "loop": false,
 "name": "default",
 "speed": 0.0
@@ -26,7 +27,7 @@ z_index = 1
 [node name="Background" type="TextureRect" parent="."]
 margin_right = 960.0
 margin_bottom = 40.0
-texture = ExtResource( 2 )
+texture = ExtResource( 11 )
 expand = true
 stretch_mode = 2
 __meta__ = {
@@ -35,11 +36,11 @@ __meta__ = {
 
 [node name="ProcessingTime" type="Node2D" parent="Background"]
 process_priority = 5
-script = ExtResource( 4 )
+script = ExtResource( 2 )
 
 [node name="StartTime" type="Node" parent="Background/ProcessingTime"]
 process_priority = -5
-script = ExtResource( 3 )
+script = ExtResource( 6 )
 
 [node name="ProcessLabel" type="Label" parent="Background/ProcessingTime"]
 modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
@@ -68,21 +69,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="FrameDrops" type="Label" parent="Background"]
+modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
+margin_left = 5.0
+margin_top = 20.0
+margin_right = 112.0
+margin_bottom = 34.0
+text = "0 drops"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="InputDisplay" type="AnimatedSprite" parent="Background"]
 position = Vector2( 200, 20 )
 frames = SubResource( 1 )
 
 [node name="LeftStick" type="Sprite" parent="Background/InputDisplay"]
-texture = ExtResource( 6 )
-script = ExtResource( 5 )
+texture = ExtResource( 8 )
+script = ExtResource( 4 )
 
 [node name="EnergyMeter" type="Sprite" parent="Background"]
 position = Vector2( 350, 20 )
-texture = ExtResource( 9 )
-script = ExtResource( 10 )
+texture = ExtResource( 7 )
+script = ExtResource( 5 )
 
 [node name="Amount" type="Sprite" parent="Background/EnergyMeter"]
-texture = ExtResource( 11 )
+texture = ExtResource( 10 )
 centered = false
 offset = Vector2( -100, -10 )
 region_enabled = true

@@ -6,10 +6,16 @@ const SHOT_FREQUENCY = 10
 export var draw = false
 
 var framecount:int = 0
-var projectile = preload("res://Projectile.tscn")
+var projectile = preload("res://scenes/Projectile.tscn")
 
 var time_elapsed = 0.0
 var draw_impact_point = Vector2()
+
+func _ready() -> void:
+	Events.connect('player_defeated', self, '_on_player_defeated')
+	
+func _on_player_defeated():
+	set_process(false)
 
 func _process(t: float) -> void:
 	time_elapsed += t
@@ -75,7 +81,7 @@ func shoot():
 	var p = projectile.instance()
 	p.velocity = calc_leading_shot_velocity()
 	p.radius = 3.0
-	p.color = Color(1,0.2,0.2)
+	p.color = Color(0.2,0.5,0.1)
 	p.seek_amount = 0.0
 	p.position = position
 	$'../BulletHolder'.add_child(p)

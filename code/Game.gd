@@ -3,8 +3,8 @@ extends Node
 var joyID:int = 0
 onready var player = $'../Scene/Player'
 var screen_bounds := Rect2(Vector2(0,40), Vector2(960, 500))
-const MAX_TRAIL_LENGTH = 10
-var topbar = preload("res://TopBar.tscn")
+const MAX_TRAIL_LENGTH = 5
+var topbar = preload("res:///scenes/TopBar.tscn")
 var topbar_height = 40.0
 
 func _ready() -> void:

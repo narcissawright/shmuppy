@@ -16,12 +16,13 @@ _global_script_class_icons={
 [application]
 
 config/name="Shmuppy"
-run/main_scene="res://Scene.tscn"
+run/main_scene="res://scenes/Scene.tscn"
 config/icon="res://img/icon.png"
 
 [autoload]
 
-Game="*res://Game.gd"
+Game="*res://code/Game.gd"
+Events="*res://code/Events.gd"
 
 [display]
 
@@ -122,4 +123,3 @@ shoot={
 [rendering]
 
 quality/filters/msaa=3
-environment/default_environment="res://default_env.tres"

@@ -40,3 +40,7 @@ func update_hitboxes() -> void:
 	rect.position = -velocity / 2.0
 	rect.rotation = Vector2.RIGHT.angle_to(velocity)
 	rect.disabled = false
+
+
+func _on_Area2D_area_entered(area: Area2D) -> void:
+	queue_free()

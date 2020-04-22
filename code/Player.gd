@@ -3,13 +3,14 @@ extends Node2D
 const MOVE_SPEED = 3.0
 const MOVEMENT_INTERPOLATION = 0.2
 const BORDER_SIZE = 10.0
+export var color := Color(0.4,0,2)
 
 var velocity:Vector2
 var damaged = false
 var energy = 200.0
 var shoot_cost = 2.0
 
-var projectile = preload("res://Projectile.tscn")
+var projectile = preload("res://scenes/Projectile.tscn")
 var fire_rate = 10 # frames per shot
 var frame_counter = 0
 const PROJECTILE_VELOCITY = 5.0
@@ -53,13 +54,20 @@ func _process(t:float) -> void:
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
 	damaged = true
-	
+	energy -= 50.0
+	if energy <= 0.0:
+		energy = 0.0
+		set_process(false)
+		$'Sprite'.modulate = Color(1,0,0)
+		Events.emit_signal('player_defeated')
+		
 func shoot() -> void:
 	var p = projectile.instance()
 	
 	var angle_1 = $'../Shooter'.position - position
 	p.velocity = angle_1.normalized() * PROJECTILE_VELOCITY
 	p.radius = 3.0
+	p.color = color
 	p.position = position
 	p.ownership = 'player'
 	
