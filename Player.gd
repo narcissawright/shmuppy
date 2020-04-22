@@ -7,7 +7,7 @@ const BORDER_SIZE = 10.0
 var velocity:Vector2
 var damaged = false
 var energy = 200.0
-var shoot_cost = 1.0
+var shoot_cost = 2.0
 
 var projectile = preload("res://Projectile.tscn")
 var fire_rate = 10 # frames per shot

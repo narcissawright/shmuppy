@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scene.gd" type="Script" id=1]
 [ext_resource path="res://Shooter.gd" type="Script" id=2]
@@ -7,30 +7,14 @@
 [ext_resource path="res://Trail.tscn" type="PackedScene" id=5]
 [ext_resource path="res://img/shooter.png" type="Texture" id=6]
 
-[sub_resource type="Shader" id=1]
-code = "shader_type canvas_item;
-uniform bool damaged;
-
-void fragment() {
-	if (damaged) {
-		COLOR = vec4(0.5, 0.0, 0.0, 1.0)
-	} else {
-		COLOR = vec4(0.0, 0.0, 0.0, 1.0)
-	}
-}"
-
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/damaged = null
-
 [sub_resource type="CircleShape2D" id=3]
 radius = 5.0
 
 [node name="Scene" type="Node2D"]
-material = SubResource( 2 )
 script = ExtResource( 1 )
 
 [node name="Player" type="Node2D" parent="."]
+process_priority = -1
 position = Vector2( 100, 260 )
 script = ExtResource( 3 )
 
@@ -47,11 +31,20 @@ collision_mask = 2
 shape = SubResource( 3 )
 
 [node name="Shooter" type="Node2D" parent="."]
-position = Vector2( 800, 270 )
+position = Vector2( 480, 270 )
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="Shooter"]
 texture = ExtResource( 6 )
+
+[node name="Label" type="Label" parent="Shooter"]
+margin_left = -10.0
+margin_top = 10.0
+margin_right = 190.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BulletHolder" type="Node2D" parent="."]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_Area2D_area_entered"]

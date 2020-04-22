@@ -34,11 +34,11 @@ __meta__ = {
 }
 
 [node name="ProcessingTime" type="Node2D" parent="Background"]
-process_priority = 1
+process_priority = 5
 script = ExtResource( 4 )
 
 [node name="StartTime" type="Node" parent="Background/ProcessingTime"]
-process_priority = -1
+process_priority = -5
 script = ExtResource( 3 )
 
 [node name="ProcessLabel" type="Label" parent="Background/ProcessingTime"]
