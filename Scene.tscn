@@ -37,14 +37,5 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="Shooter"]
 texture = ExtResource( 6 )
 
-[node name="Label" type="Label" parent="Shooter"]
-margin_left = -10.0
-margin_top = 10.0
-margin_right = 190.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="BulletHolder" type="Node2D" parent="."]
 [connection signal="area_entered" from="Player/Area2D" to="Player" method="_on_Area2D_area_entered"]

@@ -18,7 +18,22 @@ func _process(t:float) -> void:
 	frame_counter += 1
 	
 	# Movement
-	var move_dir = Game.get_stick_input('left') * MOVE_SPEED
+	var move_dir := Vector2.ZERO
+	
+	if Input.is_action_pressed("up"):
+		move_dir.y -= 1
+	if Input.is_action_pressed("down"):
+		move_dir.y += 1
+	if Input.is_action_pressed("left"):
+		move_dir.x -= 1
+	if Input.is_action_pressed("right"):
+		move_dir.x += 1
+		
+	if move_dir != Vector2.ZERO:
+		move_dir = move_dir.normalized() * MOVE_SPEED
+	else:
+		move_dir = Game.get_stick_input('left') * MOVE_SPEED
+	
 	var thrust_multiplier = 1.0
 	if Input.is_action_pressed("thrust") && energy > 1.0:
 		thrust_multiplier = 2.0

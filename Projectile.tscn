@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Projectile.gd" type="Script" id=1]
 [ext_resource path="res://img/projectile.png" type="Texture" id=2]
@@ -7,6 +7,9 @@
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 3.0
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 1, 1 )
 
 [node name="Projectile" type="Node2D"]
 script = ExtResource( 1 )
@@ -24,5 +27,22 @@ position = Vector2( 0, 0 )
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="current" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
+
+[node name="prior" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+
+[node name="rect" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+disabled = true
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 45.0
+margin_bottom = 19.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -5,9 +5,18 @@ var color:Color
 var seek_amount:float
 var velocity:Vector2
 var ownership = "enemy" # or "player"
+onready var current = $'Area2D/current'
+onready var prior = $'Area2D/prior'
+onready var rect = $'Area2D/rect'
+
+var lifetime = 0
 
 func _ready() -> void:
-	$'Area2D/CollisionShape2D'.shape.radius = radius
+	current.shape.radius = radius
+	prior.shape.radius = radius
+	rect.scale.y = radius
+	rect.scale.x = 1.0
+	
 	if ownership == "player":
 		$'enemy_sprite'.hide()
 		$'player_sprite'.show()
@@ -15,7 +24,19 @@ func _ready() -> void:
 		$'Area2D'.collision_mask = 2
 
 func _process(t: float) -> void:
+	update_hitboxes()
+	
+	lifetime += 1
+	$'Label'.text = str(lifetime)
+	
 	position += velocity
+	
 	if !Game.screen_bounds.grow(200.0).has_point(global_position):
 		queue_free()
 		
+func update_hitboxes() -> void:
+	prior.position = -velocity
+	rect.scale.x = velocity.length() / 2.0
+	rect.position = -velocity / 2.0
+	rect.rotation = Vector2.RIGHT.angle_to(velocity)
+	rect.disabled = false
