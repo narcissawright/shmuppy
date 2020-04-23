@@ -35,8 +35,8 @@ func calc_leading_shot_velocity() -> Vector2:
 
 	# What we know...
 	var shooter_location = position            # Xs, Ys
-	var target_location = Game.player.position # Xt, Yt
-	var target_velocity = Game.player.velocity # ci + dj
+	var target_location = Game.player.global_position # Xt, Yt
+	var target_velocity = Game.player.velocity + Game.player.screen_velocity # ci + dj
 	var projectile_speed = PROJECTILE_VELOCITY # P
    
 	# What we want to know...
@@ -84,5 +84,5 @@ func shoot():
 	p.color = Color(0.2,0.5,0.1)
 	p.seek_amount = 0.0
 	p.position = position
-	$'../BulletHolder'.add_child(p)
+	Game.bullet_holder.add_child(p)
 	

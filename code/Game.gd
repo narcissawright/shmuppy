@@ -1,15 +1,27 @@
 extends Node
 
 var joyID:int = 0
-onready var player = $'../Scene/Player'
+var player:KinematicBody2D
 var screen_bounds := Rect2(Vector2(0,40), Vector2(960, 500))
 const MAX_TRAIL_LENGTH = 5
 var topbar = preload("res:///scenes/TopBar.tscn")
 var topbar_height = 40.0
+var bullet_holder = Node2D.new()
+var screen
 
 func _ready() -> void:
 	topbar = topbar.instance()
 	add_child(topbar)
+
+	screen = load("res:///scenes/ScreenBounds.tscn").instance()
+	add_child(screen)
+	player = $'ScreenBounds/Player'
+	player.z_index = 2
+	
+	bullet_holder.set_name('BulletHolder')
+	bullet_holder.z_index = 1
+	add_child(bullet_holder)
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 #	screen_bounds.position = Vector2(0, topbar_height)
 #	screen_bounds.size = get_viewport().size

@@ -1,5 +1,4 @@
 extends Sprite
-onready var amount_node = $'Amount'
 
 func _process(delta: float) -> void:
-	amount_node.region_rect.size.x = Game.player.energy
+	region_rect.size.x = lerp(region_rect.size.x, Game.player.energy, 0.2)

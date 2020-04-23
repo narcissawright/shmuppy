@@ -14,3 +14,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	positions.append(parent.global_position)
 	positions.remove(0)
+	update()
+	
+func _draw() -> void:
+	draw_set_transform(-global_position, 0.0, Vector2(1,1))
+	if positions.size() > 1:
+		draw_polyline_colors(positions, colors, width, false)

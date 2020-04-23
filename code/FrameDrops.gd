@@ -2,6 +2,5 @@ extends Label
 var drops:int = 0
 
 func _process(delta: float) -> void:
-	if delta > 0.017:
-		drops += 1
-		text = str(drops) + ' drops'
+	drops += round(delta / 0.016667) - 1
+	text = str(drops) + ' drops'
