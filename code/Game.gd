@@ -2,12 +2,18 @@ extends Node
 
 var joyID:int = 0
 var player:KinematicBody2D
-var screen_bounds := Rect2(Vector2(0,40), Vector2(960, 500))
-const MAX_TRAIL_LENGTH = 5
 var topbar = preload("res:///scenes/TopBar.tscn")
 var topbar_height = 40.0
 var bullet_holder = Node2D.new()
 var screen
+
+const collision_layers = {
+	"player": 0b00000001,
+	"enemy":  0b00000010,
+	"wall":   0b00000100,
+	"border": 0b00001000
+}
+
 
 func _ready() -> void:
 	topbar = topbar.instance()
@@ -23,8 +29,6 @@ func _ready() -> void:
 	add_child(bullet_holder)
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-#	screen_bounds.position = Vector2(0, topbar_height)
-#	screen_bounds.size = get_viewport().size
 	
 	for i in range (Input.get_connected_joypads().size()):
 		print(i, ": ", Input.get_joy_name(i))

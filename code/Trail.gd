@@ -1,22 +1,22 @@
-extends Node2D
+extends Line2D
 var parent
-var positions = PoolVector2Array()
-var colors = PoolColorArray()
-export var width:float = 3.0
+var positions = []
+const MAX_TRAIL_LENGTH = 10
 
 func _ready() -> void:
 	parent = get_parent()
-	for i in range (Game.MAX_TRAIL_LENGTH):
-		var darken_amount = 1.0 - (i / float(Game.MAX_TRAIL_LENGTH))
-		colors.append(parent.color.darkened(darken_amount))
+	width = parent.radius * 2
+	gradient = Gradient.new()
+	gradient.set_color(0, Color(0,0,0,0))
+	gradient.set_color(1, parent.color)
+	for i in range (MAX_TRAIL_LENGTH):
 		positions.append(parent.global_position)
 
 func _process(delta: float) -> void:
 	positions.append(parent.global_position)
 	positions.remove(0)
-	update()
 	
-func _draw() -> void:
-	draw_set_transform(-global_position, 0.0, Vector2(1,1))
-	if positions.size() > 1:
-		draw_polyline_colors(positions, colors, width, false)
+	var positions_local = []
+	for i in (positions.size()):
+		positions_local.append(positions[i] - global_position)
+	points = PoolVector2Array(positions_local)

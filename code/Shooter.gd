@@ -1,7 +1,7 @@
 extends Node2D
 
-const PROJECTILE_VELOCITY = 5.0
-const SHOT_FREQUENCY = 10
+const PROJECTILE_VELOCITY = 3.0
+const SHOT_FREQUENCY = 15
 
 export var draw = false
 
@@ -15,22 +15,20 @@ func _ready() -> void:
 	Events.connect('player_defeated', self, '_on_player_defeated')
 	
 func _on_player_defeated():
-	set_process(false)
+	set_physics_process(false)
 
-func _process(t: float) -> void:
-	time_elapsed += t
-	framecount += 1
-	
-	if framecount > SHOT_FREQUENCY:
-		framecount -= SHOT_FREQUENCY
-		shoot()
-		
-	#position += Vector2.UP.rotated(time_elapsed)
-	if draw:
-		update()
+func _physics_process(t: float) -> void:
+	if Game.screen.has(global_position, 10):
+		time_elapsed += t
+		framecount += 1
+		if framecount > SHOT_FREQUENCY:
+			framecount -= SHOT_FREQUENCY
+			shoot()
+		if draw:
+			update()
 
 func calc_leading_shot_velocity() -> Vector2:
-	""" GLACE CALC """
+	# thank you Glace
 	# https://www.hansenlabs.com/wp-content/uploads/2018/02/target-leading-2d.pdf
 
 	# What we know...

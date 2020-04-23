@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://code/FPS.gd" type="Script" id=1]
 [ext_resource path="res://code/timekeep_end.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://img/energy_meter_full.png" type="Texture" id=10]
 [ext_resource path="res://img/topbar.png" type="Texture" id=11]
 [ext_resource path="res://img/stick_input_display_3.png" type="Texture" id=12]
+[ext_resource path="res://scenes/Trail.tscn" type="PackedScene" id=13]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -88,6 +89,9 @@ frames = SubResource( 1 )
 [node name="LeftStick" type="Sprite" parent="Background/InputDisplay"]
 texture = ExtResource( 8 )
 script = ExtResource( 4 )
+
+[node name="Trail" parent="Background/InputDisplay/LeftStick" instance=ExtResource( 13 )]
+show_behind_parent = true
 
 [node name="EnergyMeter" type="Sprite" parent="Background"]
 position = Vector2( 350, 20 )

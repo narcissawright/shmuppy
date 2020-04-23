@@ -31,7 +31,7 @@ func _process(t: float) -> void:
 	
 	position += velocity
 	
-	if !Game.screen_bounds.grow(200.0).has_point(global_position):
+	if not Game.screen.has(position, 100):
 		queue_free()
 		
 func update_hitboxes() -> void:
@@ -40,7 +40,6 @@ func update_hitboxes() -> void:
 	rect.position = -velocity / 2.0
 	rect.rotation = Vector2.RIGHT.angle_to(velocity)
 	rect.disabled = false
-
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
 	queue_free()
