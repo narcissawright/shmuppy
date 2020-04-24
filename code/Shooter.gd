@@ -8,8 +8,11 @@ export var draw = false
 var framecount:int = 0
 var projectile = preload("res://scenes/Projectile.tscn")
 
+var energy = 200.0
+
 var time_elapsed = 0.0
 var draw_impact_point = Vector2()
+var velocity = Vector2(0.2, 0)
 
 func _ready() -> void:
 	Events.connect('player_defeated', self, '_on_player_defeated')
@@ -26,50 +29,7 @@ func _physics_process(t: float) -> void:
 			shoot()
 		if draw:
 			update()
-
-func calc_leading_shot_velocity() -> Vector2:
-	# thank you Glace
-	# https://www.hansenlabs.com/wp-content/uploads/2018/02/target-leading-2d.pdf
-
-	# What we know...
-	var shooter_location = position            # Xs, Ys
-	var target_location = Game.player.global_position # Xt, Yt
-	var target_velocity = Game.player.velocity + Game.player.screen_velocity # ci + dj
-	var projectile_speed = PROJECTILE_VELOCITY # P
-   
-	# What we want to know...
-	var shoot_direction: Vector2 # ai + bj
-	var impact_point: Vector2 # Xi, Yi
-	var time_to_hit: float       # t
-   
-	# ?????
-	var A = pow(target_velocity.x, 2.0) + pow(target_velocity.y, 2.0) - pow(projectile_speed, 2.0)
-	var B = 2 * target_velocity.x * (target_location.x - shooter_location.x) + 2 * target_velocity.y * (target_location.y - shooter_location.y)
-	var C = pow(target_location.x - shooter_location.x, 2.0) + pow(target_location.y - shooter_location.y, 2.0)
-	
-	var solution_exists = true
-	
-	var first_time_to_hit = (-B + sqrt((B*B) - 4 * A * C)) / (2 * A)
-	var second_time_to_hit = (-B - sqrt((B*B) - 4 * A * C)) / (2 * A)
-	time_to_hit = min(first_time_to_hit, second_time_to_hit)
-	if sign(time_to_hit) < 1:
-		time_to_hit = max(first_time_to_hit, second_time_to_hit)
-		if sign(time_to_hit) < 1:
-			solution_exists = false
-
-	if solution_exists:
-		shoot_direction.x = ((target_location.x - shooter_location.x) / time_to_hit) + target_velocity.x
-		shoot_direction.y = ((target_location.y - shooter_location.y) / time_to_hit) + target_velocity.y
-		
-		# Improvement: if impact point is out of bounds it might as well be no solution
-		impact_point = shooter_location + shoot_direction * time_to_hit
-		draw_impact_point = impact_point
-		
-		return shoot_direction
-		
-	else: # fallback to shooting straight ahead
-		shoot_direction = target_location - shooter_location
-		return shoot_direction.normalized() * projectile_speed
+		position += velocity
 
 func _draw():
 	if draw:
@@ -77,7 +37,16 @@ func _draw():
 
 func shoot():
 	var p = projectile.instance()
-	p.velocity = calc_leading_shot_velocity()
+	
+	var shot_information = {
+		'shooter_location': global_position,
+		'shooter_velocity': Vector2.ZERO,
+		'projectile_speed': PROJECTILE_VELOCITY,
+		'target_location' : Game.player.global_position,
+		'target_velocity' : Game.player.velocity + Game.player.screen_velocity
+	}
+	
+	p.velocity = Game.calc_leading_shot_velocity(shot_information)
 	p.radius = 3.0
 	p.color = Color(0.2,0.5,0.1)
 	p.seek_amount = 0.0

@@ -1,9 +1,9 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://code/FPS.gd" type="Script" id=1]
 [ext_resource path="res://code/timekeep_end.gd" type="Script" id=2]
 [ext_resource path="res://code/FrameDrops.gd" type="Script" id=3]
-[ext_resource path="res://code/LeftStickDisplay.gd" type="Script" id=4]
+[ext_resource path="res://code/StickDisplay.gd" type="Script" id=4]
 [ext_resource path="res://code/EnergyMeter.gd" type="Script" id=5]
 [ext_resource path="res://code/timekeep_start.gd" type="Script" id=6]
 [ext_resource path="res://img/energy_meter_empty.png" type="Texture" id=7]
@@ -13,6 +13,12 @@
 [ext_resource path="res://img/topbar.png" type="Texture" id=11]
 [ext_resource path="res://img/stick_input_display_3.png" type="Texture" id=12]
 [ext_resource path="res://scenes/Trail.tscn" type="PackedScene" id=13]
+[ext_resource path="res://code/CooldownA.gd" type="Script" id=14]
+[ext_resource path="res://img/weapon_bg.png" type="Texture" id=15]
+[ext_resource path="res://code/WepAHighlight.gd" type="Script" id=16]
+[ext_resource path="res://code/thrust_indicator.gd" type="Script" id=17]
+[ext_resource path="res://img/indicator_bg.png" type="Texture" id=18]
+[ext_resource path="res://img/no_movement.png" type="Texture" id=19]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -26,7 +32,8 @@ animations = [ {
 layer = 2
 
 [node name="Background" type="TextureRect" parent="."]
-margin_right = 960.0
+margin_left = 0.174805
+margin_right = 960.175
 margin_bottom = 40.0
 texture = ExtResource( 11 )
 expand = true
@@ -82,19 +89,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InputDisplay" type="AnimatedSprite" parent="Background"]
-position = Vector2( 200, 20 )
-frames = SubResource( 1 )
-
-[node name="LeftStick" type="Sprite" parent="Background/InputDisplay"]
-texture = ExtResource( 8 )
-script = ExtResource( 4 )
-
-[node name="Trail" parent="Background/InputDisplay/LeftStick" instance=ExtResource( 13 )]
-show_behind_parent = true
-
 [node name="EnergyMeter" type="Sprite" parent="Background"]
-position = Vector2( 350, 20 )
+position = Vector2( 450, 20 )
 texture = ExtResource( 7 )
 
 [node name="Amount" type="Sprite" parent="Background/EnergyMeter"]
@@ -104,3 +100,71 @@ offset = Vector2( -100, -10 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 200, 20 )
 script = ExtResource( 5 )
+
+[node name="LeftStickBG" type="AnimatedSprite" parent="Background"]
+position = Vector2( 166, 20 )
+frames = SubResource( 1 )
+
+[node name="LeftStick" type="Sprite" parent="Background/LeftStickBG"]
+texture = ExtResource( 8 )
+script = ExtResource( 4 )
+
+[node name="Trail" parent="Background/LeftStickBG/LeftStick" instance=ExtResource( 13 )]
+show_behind_parent = true
+
+[node name="NoMove" type="Sprite" parent="Background/LeftStickBG/LeftStick"]
+texture = ExtResource( 19 )
+
+[node name="RightStickBG" type="AnimatedSprite" parent="Background"]
+position = Vector2( 200, 20 )
+frames = SubResource( 1 )
+
+[node name="RightStick" type="Sprite" parent="Background/RightStickBG"]
+texture = ExtResource( 8 )
+script = ExtResource( 4 )
+
+[node name="Trail" parent="Background/RightStickBG/RightStick" instance=ExtResource( 13 )]
+show_behind_parent = true
+
+[node name="NoMove" type="Sprite" parent="Background/RightStickBG/RightStick"]
+texture = ExtResource( 19 )
+
+[node name="WeaponA" type="Sprite" parent="Background"]
+position = Vector2( 250, 4 )
+texture = ExtResource( 15 )
+centered = false
+
+[node name="CooldownA" type="ColorRect" parent="Background/WeaponA"]
+margin_left = 1.0
+margin_top = -1.0
+margin_right = 3.0
+margin_bottom = 29.0
+rect_rotation = 180.0
+rect_pivot_offset = Vector2( 1, 16 )
+color = Color( 0.513726, 0.2, 0.827451, 1 )
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Background/WeaponA"]
+modulate = Color( 0.670588, 0.521569, 0.917647, 1 )
+margin_left = 4.0
+margin_right = 36.0
+margin_bottom = 32.0
+text = "Foo"
+align = 1
+valign = 1
+script = ExtResource( 16 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="thrust_bg" type="Sprite" parent="Background"]
+position = Vector2( 225, 10 )
+texture = ExtResource( 18 )
+
+[node name="thrust_indicator" type="Sprite" parent="Background/thrust_bg"]
+modulate = Color( 1, 0.752941, 0.364706, 1 )
+texture = ExtResource( 8 )
+script = ExtResource( 17 )

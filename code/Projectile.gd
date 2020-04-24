@@ -43,3 +43,7 @@ func update_hitboxes() -> void:
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
 	queue_free()
+
+func _on_Area2D_body_entered(body: Node) -> void:
+	if body.collision_layer == Game.collision_layers.wall:
+		queue_free()

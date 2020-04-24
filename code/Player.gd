@@ -5,6 +5,8 @@ const MOVEMENT_INTERPOLATION = 0.2
 const BORDER_SIZE = 10.0
 export var color := Color(0.25,0,1)
 
+const infinite_energy = false
+
 var screen_velocity:Vector2
 var velocity:Vector2
 var damaged = false
@@ -13,12 +15,14 @@ var shoot_cost = 2.0
 var radius = 5.0
 
 var projectile = preload("res://scenes/Projectile.tscn")
-var fire_rate = 10 # frames per shot
-var frame_counter = 0
+
+var shot_cooldown = 10 # frames per shot
+var cooldown_timer = 0
+
 const PROJECTILE_VELOCITY = 5.0
 
 func _physics_process(t:float) -> void:
-	frame_counter += 1
+	cooldown_timer = min(cooldown_timer + 1, shot_cooldown)
 	
 	# Movement
 	var move_dir := Vector2.ZERO
@@ -41,7 +45,8 @@ func _physics_process(t:float) -> void:
 	var thrust_cost = 0.1 * move_dir.length()
 	if Input.is_action_pressed("thrust") && energy > thrust_cost:
 		thrust_multiplier = 2.0
-		energy -= thrust_cost
+		if not infinite_energy:
+			energy -= thrust_cost
 	
 	velocity = velocity.linear_interpolate(move_dir * thrust_multiplier, MOVEMENT_INTERPOLATION)
 	var prior_velocity = velocity
@@ -52,13 +57,15 @@ func _physics_process(t:float) -> void:
 		if c.collider.collision_layer & Game.collision_layers.wall > 0:
 			var normal = c.normal.dot(c.travel.normalized())
 			var dmg = prior_velocity.length() * abs(normal)
-			energy -= dmg
-			if energy <= 0.0:
-				die()
+			if not infinite_energy: 
+				energy -= dmg
+				if energy <= 0.0:
+					die()
 	
-	if Input.is_action_pressed("shoot") && energy > shoot_cost && frame_counter > 10:
-		frame_counter = 0
-		energy -= shoot_cost
+	if Input.is_action_pressed("shoot") && energy > shoot_cost && cooldown_timer >= shot_cooldown:
+		cooldown_timer = 0
+		if not infinite_energy:
+			energy -= shoot_cost
 		shoot()
 
 	if energy < 200.0:
@@ -66,9 +73,10 @@ func _physics_process(t:float) -> void:
 
 func _on_Area2D_area_entered(area: Area2D) -> void:
 	damaged = true
-	energy -= 50.0
-	if energy <= 0.0:
-		die()
+	if not infinite_energy:
+		energy -= 50.0
+		if energy <= 0.0:
+			die()
 		
 func die() -> void:
 	energy = 0.0
@@ -79,13 +87,35 @@ func die() -> void:
 	
 func shoot() -> void:
 	var p = projectile.instance()
+
+	var aim_type = "2stick"
 	
-	#var angle_1 = $'../Shooter'.position - position
-	var angle_1 = Vector2.RIGHT
-	p.velocity = angle_1.normalized() * PROJECTILE_VELOCITY
+	if aim_type == "2stick":
+		var angle_1 = Vector2()
+		var right_stick_input = Game.get_stick_input('right')
+		if right_stick_input == Vector2.ZERO:
+			angle_1 = velocity.normalized()
+		else:
+			angle_1 = right_stick_input.normalized()
+		var shot_velocity = angle_1.normalized() * PROJECTILE_VELOCITY
+		shot_velocity += velocity / 2.0
+		if shot_velocity.length() < PROJECTILE_VELOCITY:
+			shot_velocity = shot_velocity.normalized() * PROJECTILE_VELOCITY
+		p.velocity = shot_velocity
+		
+	elif aim_type == 'automatic':
+		var target_node = $'../../../Level/Shooter'
+		var shot_information = {
+			'shooter_location': global_position,
+			'shooter_velocity': velocity + screen_velocity,
+			'projectile_speed': PROJECTILE_VELOCITY,
+			'target_location' : target_node.global_position,
+			'target_velocity' : target_node.velocity
+		}
+		p.velocity = Game.calc_leading_shot_velocity(shot_information)
+
 	p.radius = 3.0
 	p.color = color
 	p.position = global_position
-	p.ownership = 'player'
-	
+	p.ownership = 'player'	
 	Game.bullet_holder.add_child(p)

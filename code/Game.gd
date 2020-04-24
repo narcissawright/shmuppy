@@ -56,3 +56,51 @@ func get_stick_input(which:String) -> Vector2:
 		return Vector2()
 	axes = axes*axes.abs() # easing
 	return axes
+
+func calc_leading_shot_velocity(shot_info:Dictionary) -> Vector2:
+
+	# shot_info contains: 
+	# shooter_location : Vector2
+	# shooter_velocity : Vector2
+	# projectile_speed : float
+	# target_location  : Vector2
+	# target_velocity  : Vector2
+	
+	# Currently, shooter_velocity is not accounted for
+	# so it is possible to "outrun" your shots
+	
+	# thank you Glace
+	# https://www.hansenlabs.com/wp-content/uploads/2018/02/target-leading-2d.pdf
+   
+	# What we want to know...
+	var shoot_direction: Vector2 # ai + bj
+	var impact_point: Vector2 # Xi, Yi
+	var time_to_hit: float # t
+   
+	# ?????
+	var A = pow(shot_info.target_velocity.x, 2.0) + pow(shot_info.target_velocity.y, 2.0) - pow(shot_info.projectile_speed, 2.0)
+	var B = 2 * shot_info.target_velocity.x * (shot_info.target_location.x - shot_info.shooter_location.x) + 2 * shot_info.target_velocity.y * (shot_info.target_location.y - shot_info.shooter_location.y)
+	var C = pow(shot_info.target_location.x - shot_info.shooter_location.x, 2.0) + pow(shot_info.target_location.y - shot_info.shooter_location.y, 2.0)
+	
+	var solution_exists = true
+	
+	var first_time_to_hit = (-B + sqrt((B*B) - 4 * A * C)) / (2 * A)
+	var second_time_to_hit = (-B - sqrt((B*B) - 4 * A * C)) / (2 * A)
+	time_to_hit = min(first_time_to_hit, second_time_to_hit)
+	if sign(time_to_hit) < 1:
+		time_to_hit = max(first_time_to_hit, second_time_to_hit)
+		if sign(time_to_hit) < 1:
+			solution_exists = false
+
+	if solution_exists:
+		shoot_direction.x = ((shot_info.target_location.x - shot_info.shooter_location.x) / time_to_hit) + shot_info.target_velocity.x
+		shoot_direction.y = ((shot_info.target_location.y - shot_info.shooter_location.y) / time_to_hit) + shot_info.target_velocity.y
+		
+		# Improvement: if impact point is out of bounds it might as well be no solution
+		impact_point = shot_info.shooter_location + shoot_direction * time_to_hit
+		
+		return shoot_direction
+		
+	else: # fallback to shooting straight ahead
+		shoot_direction = shot_info.target_location - shot_info.shooter_location
+		return shoot_direction.normalized() * shot_info.projectile_speed

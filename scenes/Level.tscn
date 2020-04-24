@@ -1,0 +1,171 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://code/Shooter.gd" type="Script" id=1]
+[ext_resource path="res://img/icon.png" type="Texture" id=2]
+[ext_resource path="res://img/shooter.png" type="Texture" id=3]
+[ext_resource path="res://code/Level.gd" type="Script" id=4]
+[ext_resource path="res://code/wall_builder_tool.gd" type="Script" id=5]
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Shooter" type="Node2D" parent="."]
+position = Vector2( 1000, 270 )
+z_index = 1
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="Shooter"]
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Terrain" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Polygon2D" type="Polygon2D" parent="Terrain"]
+color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
+polygon = PoolVector2Array( 134.393, 25.2614, 678.398, 35.0381, 550, 100, 273.499, 188.672, 242.635, 97.1901 )
+script = ExtResource( 5 )
+run_script = true
+
+[node name="WallLine" type="Line2D" parent="Terrain/Polygon2D"]
+points = PoolVector2Array( 134.393, 25.2614, 678.398, 35.0381, 550, 100, 273.499, 188.672, 242.635, 97.1901, 134.393, 25.2614 )
+width = 2.0
+default_color = Color( 0.12549, 0.12549, 0.188235, 1 )
+antialiased = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Wall" type="StaticBody2D" parent="Terrain/Polygon2D"]
+collision_layer = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WallCollision" type="CollisionPolygon2D" parent="Terrain/Polygon2D/Wall"]
+polygon = PoolVector2Array( 134.393, 25.2614, 678.398, 35.0381, 550, 100, 273.499, 188.672, 242.635, 97.1901 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Polygon2D4" type="Polygon2D" parent="Terrain"]
+position = Vector2( 882.681, -27.1395 )
+color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
+polygon = PoolVector2Array( 134.393, 25.2614, 678.398, 35.0381, 550, 100, 273.499, 188.672, 242.635, 97.1901 )
+script = ExtResource( 5 )
+run_script = true
+
+[node name="WallLine2" type="Line2D" parent="Terrain/Polygon2D4"]
+points = PoolVector2Array( 134.393, 25.2614, 678.398, 35.0381, 550, 100, 273.499, 188.672, 242.635, 97.1901, 134.393, 25.2614 )
+width = 2.0
+default_color = Color( 0.12549, 0.12549, 0.188235, 1 )
+antialiased = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Wall2" type="StaticBody2D" parent="Terrain/Polygon2D4"]
+collision_layer = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WallCollision" type="CollisionPolygon2D" parent="Terrain/Polygon2D4/Wall2"]
+polygon = PoolVector2Array( 134.393, 25.2614, 678.398, 35.0381, 550, 100, 273.499, 188.672, 242.635, 97.1901 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Polygon2D2" type="Polygon2D" parent="Terrain"]
+position = Vector2( 600, 450 )
+color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
+polygon = PoolVector2Array( -4.42462, -9.2453, -114.12, 14.0235, -234.896, 60.561, -327.971, 66.1012, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -620.493, 45.0485, -616.061, 127.043, 310.258, 108.207, 187.266, 73.8574, 152.917, 46.1565, 69.8138, 15.1315 )
+script = ExtResource( 5 )
+run_script = true
+
+[node name="WallLine" type="Line2D" parent="Terrain/Polygon2D2"]
+points = PoolVector2Array( -4.42462, -9.2453, -114.12, 14.0235, -234.896, 60.561, -327.971, 66.1012, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -620.493, 45.0485, -616.061, 127.043, 310.258, 108.207, 187.266, 73.8574, 152.917, 46.1565, 69.8138, 15.1315, -4.42462, -9.2453 )
+width = 2.0
+default_color = Color( 0.12549, 0.12549, 0.188235, 1 )
+antialiased = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Wall" type="StaticBody2D" parent="Terrain/Polygon2D2"]
+collision_layer = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WallCollision" type="CollisionPolygon2D" parent="Terrain/Polygon2D2/Wall"]
+polygon = PoolVector2Array( -4.42462, -9.2453, -114.12, 14.0235, -234.896, 60.561, -327.971, 66.1012, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -620.493, 45.0485, -616.061, 127.043, 310.258, 108.207, 187.266, 73.8574, 152.917, 46.1565, 69.8138, 15.1315 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Polygon2D3" type="Polygon2D" parent="Terrain"]
+position = Vector2( 1588.65, 443.538 )
+color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
+polygon = PoolVector2Array( -4.42462, -9.2453, -114.784, -24.2556, -234.973, 11.9304, -322.854, 18.3922, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -623.973, 107.565, -616.061, 127.043, 310.258, 108.207, 216.06, 64.9171, 152.917, 46.1565, 76.4856, 2.88388 )
+script = ExtResource( 5 )
+run_script = true
+
+[node name="WallLine" type="Line2D" parent="Terrain/Polygon2D3"]
+points = PoolVector2Array( -4.42462, -9.2453, -114.784, -24.2556, -234.973, 11.9304, -322.854, 18.3922, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -623.973, 107.565, -616.061, 127.043, 310.258, 108.207, 216.06, 64.9171, 152.917, 46.1565, 76.4856, 2.88388, -4.42462, -9.2453 )
+width = 2.0
+default_color = Color( 0.12549, 0.12549, 0.188235, 1 )
+antialiased = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Wall" type="StaticBody2D" parent="Terrain/Polygon2D3"]
+collision_layer = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WallCollision" type="CollisionPolygon2D" parent="Terrain/Polygon2D3/Wall"]
+polygon = PoolVector2Array( -4.42462, -9.2453, -114.784, -24.2556, -234.973, 11.9304, -322.854, 18.3922, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -623.973, 107.565, -616.061, 127.043, 310.258, 108.207, 216.06, 64.9171, 152.917, 46.1565, 76.4856, 2.88388 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.3, 0.3 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="BGColor" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color( 0.054902, 0.105882, 0.180392, 1 )
+margin_top = 40.0
+margin_right = 1862.0
+margin_bottom = 540.0
+color = Color( 0.482353, 0.482353, 0.482353, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BGTex" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color( 0.054902, 0.105882, 0.180392, 1 )
+margin_top = 40.0
+margin_right = 1862.0
+margin_bottom = 540.0
+texture = ExtResource( 2 )
+stretch_mode = 2
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
