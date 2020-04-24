@@ -34,7 +34,7 @@ func make_wall(value):
 	
 			var staticbody = StaticBody2D.new()
 			staticbody.name = 'Wall'
-			staticbody.collision_layer = Game.collision_layers.wall
+			staticbody.collision_layer = Layers.wall
 			staticbody.set_meta("_edit_lock_", true)
 			add_child(staticbody)
 			staticbody.owner = owner

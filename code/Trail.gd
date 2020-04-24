@@ -7,8 +7,9 @@ func _ready() -> void:
 	parent = get_parent()
 	width = parent.radius * 2
 	gradient = Gradient.new()
-	gradient.set_color(0, Color(0,0,0,0))
-	gradient.set_color(1, parent.color)
+	var transparent = parent.color - Color(0,0,0,1)
+	gradient.set_color(0, transparent * 0.75)
+	gradient.set_color(1, parent.color * 0.75)
 	for i in range (MAX_TRAIL_LENGTH):
 		positions.append(parent.global_position)
 

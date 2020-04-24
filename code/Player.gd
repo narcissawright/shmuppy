@@ -53,8 +53,8 @@ func _physics_process(t:float) -> void:
 	velocity = move_and_slide(velocity * 60) / 60.0
 
 	for i in range (get_slide_count()):
-		var c = get_slide_collision(i)	
-		if c.collider.collision_layer & Game.collision_layers.wall > 0:
+		var c = get_slide_collision(i)
+		if c.collider.collision_layer & Layers.wall > 0:
 			var normal = c.normal.dot(c.travel.normalized())
 			var dmg = prior_velocity.length() * abs(normal)
 			if not infinite_energy: 
@@ -71,10 +71,9 @@ func _physics_process(t:float) -> void:
 	if energy < 200.0:
 		energy = min (energy + 0.1, 200.0)
 
-func _on_Area2D_area_entered(area: Area2D) -> void:
-	damaged = true
+func damaged(dmg) -> void:
 	if not infinite_energy:
-		energy -= 50.0
+		energy -= dmg
 		if energy <= 0.0:
 			die()
 		
@@ -94,7 +93,9 @@ func shoot() -> void:
 		var angle_1 = Vector2()
 		var right_stick_input = Game.get_stick_input('right')
 		if right_stick_input == Vector2.ZERO:
-			angle_1 = velocity.normalized()
+			angle_1 = (velocity + screen_velocity).normalized()
+			if angle_1 == Vector2.ZERO:
+				angle_1 = Vector2.RIGHT
 		else:
 			angle_1 = right_stick_input.normalized()
 		var shot_velocity = angle_1.normalized() * PROJECTILE_VELOCITY

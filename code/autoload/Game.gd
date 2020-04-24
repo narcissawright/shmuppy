@@ -7,14 +7,6 @@ var topbar_height = 40.0
 var bullet_holder = Node2D.new()
 var screen
 
-const collision_layers = {
-	"player": 0b00000001,
-	"enemy":  0b00000010,
-	"wall":   0b00000100,
-	"border": 0b00001000
-}
-
-
 func _ready() -> void:
 	topbar = topbar.instance()
 	add_child(topbar)
