@@ -13,11 +13,11 @@ func _ready() -> void:
 	
 	match ownership:
 		"player":
-			$'player_sprite'.show()
+			$'main_sprites/player_sprite'.show()
 			collision_layer = 0
 			collision_mask = Layers.wall | Layers.enemy
 		"enemy":
-			$'enemy_sprite'.show()
+			$'main_sprites/enemy_sprite'.show()
 			collision_layer = 0
 			collision_mask = Layers.wall | Layers.player
 
@@ -33,7 +33,13 @@ func _physics_process(t: float) -> void:
 		hit(collision)
 		
 func hit(col):
+	collision_layer = 0
+	collision_mask = 0
+	$'collisionfx'.activate(velocity)
 	if col.collider.collision_layer & Layers.player == Layers.player:
 		Game.player.damaged(dmg)
-	yield(VisualServer, 'frame_post_draw')
-	queue_free()
+
+	var tween = get_node("Tween")
+	tween.interpolate_property($'main_sprites', "modulate", 
+		Color(1,1,1,1), Color(1,1,1,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.start()

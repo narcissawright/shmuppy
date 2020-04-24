@@ -3,7 +3,7 @@ extends KinematicBody2D
 const MOVE_SPEED = 3.0
 const MOVEMENT_INTERPOLATION = 0.2
 const BORDER_SIZE = 10.0
-export var color := Color(0.25,0,1)
+export var color := Color(0.4,0.25,1)
 
 const infinite_energy = false
 

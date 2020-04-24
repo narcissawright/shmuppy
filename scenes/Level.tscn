@@ -140,13 +140,14 @@ __meta__ = {
 }
 
 [node name="Polygon2D5" type="Polygon2D" parent="Terrain"]
+position = Vector2( 287.04, 36.7302 )
 color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
-polygon = PoolVector2Array( 511.641, 149.826, 508.317, 157.582, 500.561, 388.054, 509.425, 398.026 )
+polygon = PoolVector2Array( 526.135, 243.87, 500.287, 292.844, 532.936, 344.538, 622.721, 366.304, 629.523, 341.817, 547.901, 318.691, 530.216, 286.042, 546.54, 252.032 )
 script = ExtResource( 5 )
 run_script = true
 
 [node name="WallLine" type="Line2D" parent="Terrain/Polygon2D5"]
-points = PoolVector2Array( 511.641, 149.826, 508.317, 157.582, 500.561, 388.054, 509.425, 398.026, 511.641, 149.826 )
+points = PoolVector2Array( 526.135, 243.87, 500.287, 292.844, 532.936, 344.538, 622.721, 366.304, 629.523, 341.817, 547.901, 318.691, 530.216, 286.042, 546.54, 252.032, 526.135, 243.87 )
 width = 2.0
 default_color = Color( 0.12549, 0.12549, 0.188235, 1 )
 antialiased = true
@@ -161,7 +162,7 @@ __meta__ = {
 }
 
 [node name="WallCollision" type="CollisionPolygon2D" parent="Terrain/Polygon2D5/Wall"]
-polygon = PoolVector2Array( 511.641, 149.826, 508.317, 157.582, 500.561, 388.054, 509.425, 398.026 )
+polygon = PoolVector2Array( 526.135, 243.87, 500.287, 292.844, 532.936, 344.538, 622.721, 366.304, 629.523, 341.817, 547.901, 318.691, 530.216, 286.042, 546.54, 252.032 )
 __meta__ = {
 "_edit_lock_": true
 }
