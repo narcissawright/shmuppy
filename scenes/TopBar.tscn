@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://code/FPS.gd" type="Script" id=1]
 [ext_resource path="res://code/timekeep_end.gd" type="Script" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://code/thrust_indicator.gd" type="Script" id=17]
 [ext_resource path="res://img/indicator_bg.png" type="Texture" id=18]
 [ext_resource path="res://img/no_movement.png" type="Texture" id=19]
+[ext_resource path="res://code/projectile_count.gd" type="Script" id=20]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -38,6 +39,22 @@ margin_bottom = 40.0
 texture = ExtResource( 11 )
 expand = true
 stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActiveProjectiles" type="Label" parent="Background"]
+modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 800.0
+margin_top = -20.0
+margin_right = -5.00012
+margin_bottom = -6.0
+text = "0 active"
+align = 2
+script = ExtResource( 20 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -5,7 +5,7 @@ const MOVEMENT_INTERPOLATION = 0.2
 const BORDER_SIZE = 10.0
 export var color := Color(0.4,0.25,1)
 
-const infinite_energy = false
+const infinite_energy = true
 
 var screen_velocity:Vector2
 var velocity:Vector2

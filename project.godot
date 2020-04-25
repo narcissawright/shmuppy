@@ -128,6 +128,11 @@ shoot={
 2d_physics/layer_3="Wall"
 2d_physics/layer_4="ScreenBounds"
 
+[physics]
+
+2d/cell_size=32
+common/enable_object_picking=false
+
 [rendering]
 
 quality/filters/msaa=3

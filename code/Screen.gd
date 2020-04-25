@@ -6,7 +6,6 @@ var bounds = Rect2((ui_offset), Vector2(960, 500))
 func has(point:Vector2, grow_amount:float = 0) -> bool:
 	bounds.position = global_position + ui_offset
 	
-	# hardcoded offscreen limit for objects
 	if bounds.grow(grow_amount).has_point(point):
 		return true
 	return false
