@@ -1,7 +1,7 @@
 extends Node2D
 
-const PROJECTILE_VELOCITY = 25.0
-const SHOT_FREQUENCY = 30
+const PROJECTILE_VELOCITY = 2.0
+const SHOT_FREQUENCY = 1
 
 export var draw = false
 
