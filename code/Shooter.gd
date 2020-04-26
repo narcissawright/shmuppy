@@ -6,7 +6,7 @@ const SHOT_FREQUENCY = 1
 export var draw = false
 
 var framecount:int = 0
-var projectile = preload("res://scenes/Projectile.tscn")
+var projectile = preload("res://scenes/Projectile_castmotion.tscn")
 
 var energy = 200.0
 

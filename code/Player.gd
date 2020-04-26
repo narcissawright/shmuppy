@@ -14,7 +14,7 @@ var energy = 200.0
 var shoot_cost = 2.0
 var radius = 5.0
 
-var projectile = preload("res://scenes/Projectile.tscn")
+var projectile = preload("res://scenes/Projectile_castmotion.tscn")
 
 var shot_cooldown = 10 # frames per shot
 var cooldown_timer = 0
