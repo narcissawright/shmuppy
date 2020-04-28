@@ -14,5 +14,8 @@ func activate(v) -> void:
 	
 func _process(t:float) -> void:
 	total_time += t
-	if total_time > 0.4:
-		get_parent().queue_free()
+	if total_time > 1.0:
+		emitting = false
+		total_time = 0.0
+		get_parent().disable()
+		set_process(false)

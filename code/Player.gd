@@ -85,7 +85,13 @@ func die() -> void:
 	Events.emit_signal('player_defeated')
 	
 func shoot() -> void:
-	var p = projectile.instance()
+	var p_data:Dictionary = {
+		"velocity": Vector2(),
+		"position": global_position,
+		"ownership": "player",
+		"radius": 3.0,
+		"color": color
+	}
 
 	var aim_type = "2stick"
 	
@@ -102,7 +108,7 @@ func shoot() -> void:
 		shot_velocity += velocity / 2.0
 		if shot_velocity.length() < PROJECTILE_VELOCITY:
 			shot_velocity = shot_velocity.normalized() * PROJECTILE_VELOCITY
-		p.velocity = shot_velocity
+		p_data.velocity = shot_velocity
 		
 	elif aim_type == 'automatic':
 		var target_node = $'../../../Level/Shooter'
@@ -113,10 +119,6 @@ func shoot() -> void:
 			'target_location' : target_node.global_position,
 			'target_velocity' : target_node.velocity
 		}
-		p.velocity = Game.calc_leading_shot_velocity(shot_information)
-
-	p.radius = 3.0
-	p.color = color
-	p.position = global_position
-	p.ownership = 'player'	
-	Game.bullet_holder.add_child(p)
+		p_data.velocity = Game.calc_leading_shot_velocity(shot_information)
+	
+	Game.bullet_holder.spawn_bullet(p_data)

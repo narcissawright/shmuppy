@@ -1,7 +1,7 @@
 extends Node2D
 
-const PROJECTILE_VELOCITY = 2.0
-const SHOT_FREQUENCY = 1
+const PROJECTILE_VELOCITY = 4.0
+const SHOT_FREQUENCY = 2
 
 export var draw = false
 
@@ -36,7 +36,6 @@ func _draw():
 		draw_line(Vector2.ZERO, draw_impact_point - position, Color(0.5,0,0.5), 2, true)
 
 func shoot():
-	var p = projectile.instance()
 	
 	var shot_information = {
 		'shooter_location': global_position,
@@ -45,11 +44,21 @@ func shoot():
 		'target_location' : Game.player.global_position,
 		'target_velocity' : Game.player.velocity + Game.player.screen_velocity
 	}
+	var p_data:Dictionary = {
+		'velocity' : Game.calc_leading_shot_velocity(shot_information),
+		'radius' : 3.0,
+		'color' : Color(0.2,0.5,0.1),
+		'seek_amount' : 0.0,
+		'ownership' : 'enemy',
+		'position' : position
+	}
+	Game.bullet_holder.spawn_bullet(p_data)
 	
-	p.velocity = Game.calc_leading_shot_velocity(shot_information)
-	p.radius = 3.0
-	p.color = Color(0.2,0.5,0.1)
-	p.seek_amount = 0.0
-	p.position = position
-	Game.bullet_holder.add_child(p)
+	#var p = projectile.instance()
+#	p.velocity = Game.calc_leading_shot_velocity(shot_information)
+#	p.radius = 3.0
+#	p.color = Color(0.2,0.5,0.1)
+#	p.seek_amount = 0.0
+#	p.position = position
+#	Game.bullet_holder.add_child(p)
 	

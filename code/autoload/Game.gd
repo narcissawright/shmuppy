@@ -4,8 +4,9 @@ var joyID:int = 0
 var player:KinematicBody2D
 var topbar = preload("res:///scenes/TopBar.tscn")
 var topbar_height = 40.0
-var bullet_holder = Node2D.new()
+var bullet_holder = preload("res:///scenes/BulletManager.tscn")
 var screen
+var bulletcount = 0
 
 func _ready() -> void:
 	topbar = topbar.instance()
@@ -16,7 +17,7 @@ func _ready() -> void:
 	player = $'ScreenBounds/Player'
 	player.z_index = 2
 	
-	bullet_holder.set_name('BulletHolder')
+	bullet_holder = bullet_holder.instance()
 	bullet_holder.z_index = 1
 	add_child(bullet_holder)
 	
