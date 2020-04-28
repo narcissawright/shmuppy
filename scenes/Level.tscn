@@ -13,7 +13,7 @@ __meta__ = {
 }
 
 [node name="Shooter" type="Node2D" parent="."]
-position = Vector2( 1300, 270 )
+position = Vector2( 1000, 270 )
 z_index = 1
 script = ExtResource( 1 )
 

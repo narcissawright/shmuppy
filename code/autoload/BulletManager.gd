@@ -1,5 +1,5 @@
 extends Node2D
-var projectile = preload("res:///scenes/Projectile_castmotion.tscn")
+var projectile = preload("res:///scenes/Projectile_gpu.tscn")
 var bullet_array = []
 var disabled_list = []
 var count = 0
@@ -25,7 +25,7 @@ func add_to_disabled(index:int) -> void:
 
 func spawn_bullet(data:Dictionary) -> void:
 	var index = disabled_list.pop_front()
-	if index == -1:
+	if index == -1 or typeof(index) == TYPE_NIL:
 		#print("Max capacity reached")
 		return
 	bullet_array[index].velocity = data.velocity

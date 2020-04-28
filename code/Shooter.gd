@@ -1,7 +1,7 @@
 extends Node2D
 
-const PROJECTILE_VELOCITY = 5.0
-const SHOT_FREQUENCY = 3
+const PROJECTILE_VELOCITY = 20.0
+const SHOT_FREQUENCY = 5
 
 export var draw = false
 
@@ -29,7 +29,7 @@ func _physics_process(t: float) -> void:
 			shoot()
 		if draw:
 			update()
-		position += velocity
+		#position += velocity
 
 func _draw():
 	if draw:
