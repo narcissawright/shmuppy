@@ -4,9 +4,7 @@ var joyID:int = 0
 var player:KinematicBody2D
 var topbar = preload("res:///scenes/TopBar.tscn")
 var topbar_height = 40.0
-var bullet_holder = preload("res:///scenes/BulletManager.tscn")
 var screen
-var bulletcount = 0
 
 func _ready() -> void:
 	topbar = topbar.instance()
@@ -16,10 +14,6 @@ func _ready() -> void:
 	add_child(screen)
 	player = $'ScreenBounds/Player'
 	player.z_index = 2
-	
-	bullet_holder = bullet_holder.instance()
-	bullet_holder.z_index = 1
-	add_child(bullet_holder)
 	
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	

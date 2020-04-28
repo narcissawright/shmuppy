@@ -1,7 +1,7 @@
 extends Node2D
 
-const PROJECTILE_VELOCITY = 4.0
-const SHOT_FREQUENCY = 2
+const PROJECTILE_VELOCITY = 5.0
+const SHOT_FREQUENCY = 3
 
 export var draw = false
 
@@ -52,7 +52,7 @@ func shoot():
 		'ownership' : 'enemy',
 		'position' : position
 	}
-	Game.bullet_holder.spawn_bullet(p_data)
+	BulletManager.spawn_bullet(p_data)
 	
 	#var p = projectile.instance()
 #	p.velocity = Game.calc_leading_shot_velocity(shot_information)

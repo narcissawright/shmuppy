@@ -7,6 +7,7 @@ var seek_amount:float
 var velocity:Vector2
 var ownership:String
 var dmg = 25.0
+var bullet_index:int
 
 var shape:CircleShape2D
 var mask:int = 0
@@ -16,17 +17,16 @@ onready var sprites = $'main_sprites'
 onready var tween = $'Tween'
 
 func _ready() -> void:
-	disable()
+	set_process(false)
 
 func disable() -> void:
-	Game.bulletcount -= 1
 	tween.stop_all()
 	enabled = false
 	set_process(false)
+	BulletManager.add_to_disabled(bullet_index)
 	hide()
 
 func enable() -> void:
-	Game.bulletcount += 1
 	enabled = true
 	sprites.modulate = Color(1,1,1,1)
 	show()

@@ -30,6 +30,7 @@ script = ExtResource( 5 )
 [node name="main_sprites" type="Node2D" parent="."]
 
 [node name="enemy_sprite" type="Sprite" parent="main_sprites"]
+visible = false
 z_index = 1
 texture = ExtResource( 4 )
 

@@ -24,6 +24,7 @@ config/icon="res://img/icon.png"
 Game="*res://code/autoload/Game.gd"
 Events="*res://code/autoload/Events.gd"
 Layers="*res://code/autoload/Layers.gd"
+BulletManager="*res://code/autoload/BulletManager.gd"
 
 [display]
 

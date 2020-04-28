@@ -1,27 +1,30 @@
 extends Node2D
 var projectile = preload("res:///scenes/Projectile_castmotion.tscn")
 var bullet_array = []
+var disabled_list = []
+var count = 0
+const MAX_COUNT = 1000
 
 func _ready() -> void:
-	for i in range (1000):
+	z_index = 1
+	for i in range (MAX_COUNT):
 		var p = projectile.instance()
 		
-		var xpos = 500.0 + ((i % 64) * 8)
-		var ypos = 45.0 + (floor(i / 64) * 8)
+		var xpos = (i % 64) * 8
+		var ypos = floor(i / 64) * 8
 		
 		p.position = Vector2(xpos, ypos)
+		p.bullet_index = i
 		add_child(p)
 		bullet_array.append(p)
-	Game.bulletcount = 0
+		disabled_list.append(i)
 
-func find_disabled_bullet() -> int:
-	for i in range (1000):
-		if not bullet_array[i].enabled:
-			return i
-	return -1
+func add_to_disabled(index:int) -> void:
+	disabled_list.append(index)
+	count -= 1
 
 func spawn_bullet(data:Dictionary) -> void:
-	var index = find_disabled_bullet()
+	var index = disabled_list.pop_front()
 	if index == -1:
 		#print("Max capacity reached")
 		return
@@ -31,7 +34,4 @@ func spawn_bullet(data:Dictionary) -> void:
 	bullet_array[index].radius = data.radius
 	bullet_array[index].color = data.color
 	bullet_array[index].enable()
-
-func _process(delta: float) -> void:
-	# disable bullets offscreen
-	pass
+	count += 1

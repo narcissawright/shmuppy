@@ -121,4 +121,4 @@ func shoot() -> void:
 		}
 		p_data.velocity = Game.calc_leading_shot_velocity(shot_information)
 	
-	Game.bullet_holder.spawn_bullet(p_data)
+	BulletManager.spawn_bullet(p_data)
