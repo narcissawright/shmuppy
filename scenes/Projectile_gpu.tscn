@@ -48,26 +48,19 @@ void fragment() {
 	if ((0.0 <= AM_dot_AB && AM_dot_AB <= dot(AB, AB)) &&
 		(0.0 <= AM_dot_AD && AM_dot_AD <= dot(AD, AD))) 
 	{
+		COLOR = vec4(0,0,0,1);
 		COLOR = passed_color;
 	} else {
 		float d = length(projectile_pos - pixel_pos); // distance of pixel from projectile
 		float d2 = length(projectile_prior - pixel_pos); // distance of pixel from prior
 		
 		float delta = fwidth(d);
-		float alpha = smoothstep(radius, radius+delta, d); // antialiasing
-		float alpha2 = smoothstep(radius, radius+delta, d2);
+		float delta2 = fwidth(d2);
+		float alpha = smoothstep(radius-delta, radius, d); // antialiasing
+		float alpha2 = smoothstep(radius-delta2, radius, d2);
 		alpha = min(alpha, alpha2);
 		COLOR = mix(vec4(passed_color.rgb,1.0), vec4(passed_color.rgb,0.0), alpha);
 	}
-		
-		
-		
-		// if ((d < radius ) || (d2 < radius)) { COLOR = passed_color; }
-		
-		
-		
-		
-		
 		
 		
 		
@@ -82,7 +75,7 @@ shader_param/radius = null
 [sub_resource type="ImageTexture" id=5]
 flags = 0
 flags = 0
-size = Vector2( 64, 64 )
+size = Vector2( 128, 128 )
 
 [sub_resource type="ParticlesMaterial" id=2]
 flag_disable_z = true
