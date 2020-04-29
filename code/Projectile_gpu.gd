@@ -48,13 +48,18 @@ func enable() -> void:
 	query.set_shape(shape)
 	query.motion = velocity
 	query.transform = global_transform
+	# maybe set texture size here....
+	
 	material.set_shader_param("passed_color",color)
 	material.set_shader_param("radius",radius)
+	material.set_shader_param("velocity",velocity)
 	set_process(true)
 
 func _process(t: float) -> void:
 	
-	material.set_shader_param("velocity",velocity)
+	# doesn't need to be set in process 
+	# due to velocity remaining constant so far
+	# material.set_shader_param("velocity",velocity)
 	
 	if not Game.screen.has(position, 100):
 		disable()
@@ -77,6 +82,7 @@ func _process(t: float) -> void:
 		hit()
 
 func hit():
+	material.set_shader_param("velocity",0.0)
 	set_process(false)
 	collision_fx.activate(velocity)
 	#if col.collider.collision_layer & Layers.player == Layers.player:

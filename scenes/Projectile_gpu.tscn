@@ -12,62 +12,65 @@ uniform vec4 passed_color;
 uniform float radius;
 
 varying vec2 projectile_pos;
-const float projectile_border = 1.5;
+varying vec2 projectile_prior;
+varying vec2 point_A;
+varying vec2 point_B;
+varying vec2 point_C;
+varying vec2 point_D;
+varying vec2 AB;
+varying vec2 AD;
 
 void vertex() {
+	// maybe move this to CPU
 	projectile_pos.x = WORLD_MATRIX[3][0]; // get projectile position from matrix
 	projectile_pos.y = WORLD_MATRIX[3][1];
-}
-
-void fragment() {
-	bool drawn = false;
-	vec2 pixel_pos = FRAGCOORD.xy; // pixel position on screen
-	pixel_pos.y = 540.0 - pixel_pos.y; // y0 at top of screen instead
-	
-	vec2 projectile_prior = projectile_pos - velocity; // where was projectile previous frame
-	
-	// projectile_pos -> projectile_prior is a line
-	// radius is how thick the line should be (a rectangle)
+	projectile_prior = projectile_pos - velocity;
 	mat2 rotation_matrix = mat2(vec2(0.0, -1.0), vec2(1.0, 0.0));
 	vec2 rect_offset = normalize(velocity) * rotation_matrix;
 	rect_offset *= radius;
-	vec2 point_A = projectile_pos - rect_offset;
-	vec2 point_B = projectile_pos + rect_offset;
-	vec2 point_C = projectile_prior + rect_offset;
-	vec2 point_D = projectile_prior - rect_offset;
-//	if (length(point_A - pixel_pos) < 2.0) { drawn = true; COLOR = vec4(1,0,0,1) }
-//	if (length(point_B - pixel_pos) < 2.0) { drawn = true; COLOR = vec4(0,1,0,1) }
-//	if (length(point_C - pixel_pos) < 2.0) { drawn = true; COLOR = vec4(0,0,1,1) }
-//	if (length(point_D - pixel_pos) < 2.0) { drawn = true; COLOR = vec4(1,1,0,1)}
-	
-	
+	point_A = projectile_pos - rect_offset; // get hitbox rectangle
+	point_B = projectile_pos + rect_offset;
+	point_C = projectile_prior + rect_offset;
+	point_D = projectile_prior - rect_offset;
+	AB = point_B - point_A;
+	AD = point_D - point_A;
+}
+
+void fragment() {
+	COLOR = vec4(0,0,0,0);
+	vec2 pixel_pos = FRAGCOORD.xy; // pixel position on screen
+	pixel_pos.y = 540.0 - pixel_pos.y; // y0 at top of screen instead
 	// formula for finding if a point is within a rectangle
-	// (0<AM⋅AB<AB⋅AB)∧(0<AM⋅AD<AD⋅AD)
+	// (0<AM⋅AB<AB⋅AB) and (0<AM⋅AD<AD⋅AD)
 	vec2 AM = pixel_pos - point_A;
-	vec2 AB = point_B - point_A;
-	vec2 AD = point_D - point_A;
 	float AM_dot_AB = dot(AM, AB);
 	float AM_dot_AD = dot(AM, AD);
 	if ((0.0 <= AM_dot_AB && AM_dot_AB <= dot(AB, AB)) &&
 		(0.0 <= AM_dot_AD && AM_dot_AD <= dot(AD, AD))) 
 	{
 		COLOR = passed_color;
-		drawn = true
+	} else {
+		float d = length(projectile_pos - pixel_pos); // distance of pixel from projectile
+		float d2 = length(projectile_prior - pixel_pos); // distance of pixel from prior
+		
+		float delta = fwidth(d);
+		float alpha = smoothstep(radius, radius+delta, d); // antialiasing
+		float alpha2 = smoothstep(radius, radius+delta, d2);
+		alpha = min(alpha, alpha2);
+		COLOR = mix(vec4(passed_color.rgb,1.0), vec4(passed_color.rgb,0.0), alpha);
 	}
-	
-	float d = length(projectile_pos - pixel_pos); // distance of pixel from projectile
-	float d2 = length(projectile_prior - pixel_pos); // distance of pixel from prior
-	if ((d < radius) || (d2 < radius)) {
-		drawn = true;
-		COLOR = passed_color;
-		if (d < radius - projectile_border) {
-			COLOR = passed_color;
-		}
-	}
-	
-	if (!drawn) {
-		discard;
-	}
+		
+		
+		
+		// if ((d < radius ) || (d2 < radius)) { COLOR = passed_color; }
+		
+		
+		
+		
+		
+		
+		
+		
 }"
 
 [sub_resource type="ShaderMaterial" id=4]

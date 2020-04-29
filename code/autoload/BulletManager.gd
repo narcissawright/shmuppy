@@ -3,7 +3,7 @@ var projectile = preload("res:///scenes/Projectile_gpu.tscn")
 var bullet_array = []
 var disabled_list = []
 var count = 0
-const MAX_COUNT = 1000
+const MAX_COUNT = 3000 #1000 is currently a good max
 
 func _ready() -> void:
 	z_index = 1
@@ -24,7 +24,7 @@ func add_to_disabled(index:int) -> void:
 	count -= 1
 
 func spawn_bullet(data:Dictionary) -> void:
-	var index = disabled_list.pop_front()
+	var index = disabled_list.pop_back()
 	if index == -1 or typeof(index) == TYPE_NIL:
 		#print("Max capacity reached")
 		return
