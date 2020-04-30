@@ -11,6 +11,8 @@ uniform vec2 velocity;
 uniform vec4 passed_color;
 uniform float radius;
 
+varying vec2 crossproduct;
+
 varying vec2 projectile_pos;
 varying vec2 projectile_prior;
 varying vec2 point_A;
@@ -25,42 +27,92 @@ void vertex() {
 	projectile_pos.x = WORLD_MATRIX[3][0]; // get projectile position from matrix
 	projectile_pos.y = WORLD_MATRIX[3][1];
 	projectile_prior = projectile_pos - velocity;
-	mat2 rotation_matrix = mat2(vec2(0.0, -1.0), vec2(1.0, 0.0));
-	vec2 rect_offset = normalize(velocity) * rotation_matrix;
-	rect_offset *= radius;
-	point_A = projectile_pos - rect_offset; // get hitbox rectangle
-	point_B = projectile_pos + rect_offset;
-	point_C = projectile_prior + rect_offset;
-	point_D = projectile_prior - rect_offset;
-	AB = point_B - point_A;
-	AD = point_D - point_A;
+
+//	mat2 rotation_matrix = mat2(vec2(0.0, -1.0), vec2(1.0, 0.0));
+//	vec2 rect_offset = normalize(velocity) * rotation_matrix;
+//	rect_offset *= radius;
+//	point_A = projectile_pos - rect_offset; // get hitbox rectangle
+//	point_B = projectile_pos + rect_offset;
+//	point_C = projectile_prior + rect_offset;
+//	point_D = projectile_prior - rect_offset;
+//	AB = point_B - point_A;
+//	AD = point_D - point_A;
+}
+
+float minimum_distance(vec2 v, vec2 w, vec2 p) {
+	// how close is point p to line segment vw?
+	float l2 = dot(w-v, w-v);
+	if (l2 == 0.0) return length(v-p); // v == w case
+	float t = max(0, min(1, dot(p - v, w - v) / l2));
+	vec2 projection = v + t * (w - v);  // Projection falls on the segment
+	return length(projection - p);
 }
 
 void fragment() {
 	COLOR = vec4(0,0,0,0);
 	vec2 pixel_pos = FRAGCOORD.xy; // pixel position on screen
 	pixel_pos.y = 540.0 - pixel_pos.y; // y0 at top of screen instead
+	
+	float dist = minimum_distance(projectile_pos, projectile_prior, pixel_pos);
+	float delta = fwidth(dist);
+	float alpha = smoothstep(radius-delta, radius, dist);
+	delta = radius;
+	float intensity = smoothstep(0, radius * 0.667, dist);
+	vec3 new_color = mix(vec3(1,1,1), passed_color.rgb, intensity);
+	COLOR = mix(vec4(new_color,1.0), vec4(new_color,0.0), alpha);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+//	float line_position = 
+//		( ((pixel_pos.x - projectile_pos.x)*(projectile_prior.x - projectile_pos.x))
+//		+ ((pixel_pos.y - projectile_pos.y)*(projectile_prior.y - projectile_pos.y)) )
+//		/ length(velocity);
+//
+//
+//	line_position = dot(
+//		normalize(projectile_pos - projectile_prior), 
+//		pixel_pos - projectile_pos);
+//
+//
+//	line_position = clamp(line_position, 0.0, 1.0);
+//	vec2 target_point = mix(projectile_pos, projectile_prior, line_position);
+//	float dist = length(pixel_pos - target_point);
+//	if (dist < radius) {
+//		COLOR = passed_color;
+//	}
+//
+	
+	
 	// formula for finding if a point is within a rectangle
 	// (0<AM⋅AB<AB⋅AB) and (0<AM⋅AD<AD⋅AD)
-	vec2 AM = pixel_pos - point_A;
-	float AM_dot_AB = dot(AM, AB);
-	float AM_dot_AD = dot(AM, AD);
-	if ((0.0 <= AM_dot_AB && AM_dot_AB <= dot(AB, AB)) &&
-		(0.0 <= AM_dot_AD && AM_dot_AD <= dot(AD, AD))) 
-	{
-		COLOR = vec4(0,0,0,1);
-		COLOR = passed_color;
-	} else {
-		float d = length(projectile_pos - pixel_pos); // distance of pixel from projectile
-		float d2 = length(projectile_prior - pixel_pos); // distance of pixel from prior
-		
-		float delta = fwidth(d);
-		float delta2 = fwidth(d2);
-		float alpha = smoothstep(radius-delta, radius, d); // antialiasing
-		float alpha2 = smoothstep(radius-delta2, radius, d2);
-		alpha = min(alpha, alpha2);
-		COLOR = mix(vec4(passed_color.rgb,1.0), vec4(passed_color.rgb,0.0), alpha);
-	}
+
+//	vec2 AM = pixel_pos - point_A;
+//	float AM_dot_AB = dot(AM, AB);
+//	float AM_dot_AD = dot(AM, AD);
+//	if ((0.0 <= AM_dot_AB && AM_dot_AB <= dot(AB, AB)) &&
+//		(0.0 <= AM_dot_AD && AM_dot_AD <= dot(AD, AD))) 
+//	{
+//		COLOR = vec4(0,0,0,1);
+//		COLOR = passed_color;
+//	} else {
+//		float d = length(projectile_pos - pixel_pos); // distance of pixel from projectile
+//		float d2 = length(projectile_prior - pixel_pos); // distance of pixel from prior
+//
+//		float delta = fwidth(d);
+//		float delta2 = fwidth(d2);
+//		float alpha = smoothstep(radius-delta, radius, d); // antialiasing
+//		float alpha2 = smoothstep(radius-delta2, radius, d2);
+//		alpha = min(alpha, alpha2);
+//		COLOR = mix(vec4(passed_color.rgb,1.0), vec4(passed_color.rgb,0.0), alpha);
+//	}
 		
 		
 		
