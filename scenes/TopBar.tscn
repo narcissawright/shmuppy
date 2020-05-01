@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://code/FPS.gd" type="Script" id=1]
 [ext_resource path="res://code/timekeep_end.gd" type="Script" id=2]
@@ -20,6 +20,8 @@
 [ext_resource path="res://img/indicator_bg.png" type="Texture" id=18]
 [ext_resource path="res://img/no_movement.png" type="Texture" id=19]
 [ext_resource path="res://code/projectile_count.gd" type="Script" id=20]
+[ext_resource path="res://code/shot_total.gd" type="Script" id=21]
+[ext_resource path="res://code/destroyed.gd" type="Script" id=22]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -90,6 +92,30 @@ margin_right = 112.0
 margin_bottom = 19.0
 text = "~~ FPS"
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="shots fired" type="Label" parent="Background"]
+modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
+margin_left = 600.0
+margin_top = 5.0
+margin_right = 750.0
+margin_bottom = 19.0
+text = "shots fired: "
+script = ExtResource( 21 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="destroyed" type="Label" parent="Background"]
+modulate = Color( 0.286275, 0.337255, 0.619608, 1 )
+margin_left = 600.0
+margin_top = 20.0
+margin_right = 750.0
+margin_bottom = 34.0
+text = "destroyed: "
+script = ExtResource( 22 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

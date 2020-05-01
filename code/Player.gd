@@ -10,7 +10,8 @@ const infinite_energy = false
 var screen_velocity:Vector2
 var velocity:Vector2
 var damaged = false
-var energy = 200.0
+var energy = 200.0 setget _set_energy
+var energy_max = 200.0
 var shoot_cost = 2.0
 var radius = 5.0
 
@@ -18,8 +19,25 @@ var projectile = preload("res://scenes/Projectile_gpu.tscn")
 
 var shot_cooldown = 10 # frames per shot
 var cooldown_timer = 0
+var shots_fired = 0
+var destroyed = 0
 
 const PROJECTILE_VELOCITY = 10.0
+
+func hit(dmg) -> void:
+	_set_energy(energy - dmg)
+
+func _set_energy(value):
+	if not infinite_energy:
+		energy = clamp(value, 0.0, energy_max)
+		if energy <= 0.0:
+			die()
+		
+func die() -> void:
+	energy = 0.0
+	set_physics_process(false)
+	$'Sprite'.modulate = Color(1,0.2,0.2)
+	Events.emit_signal('player_defeated')
 
 func _physics_process(t:float) -> void:
 	cooldown_timer = min(cooldown_timer + 1, shot_cooldown)
@@ -50,28 +68,17 @@ func _physics_process(t:float) -> void:
 					die()
 	
 	if Input.is_action_pressed("shoot") && energy > shoot_cost && cooldown_timer >= shot_cooldown:
-		cooldown_timer = 0
-		if not infinite_energy:
-			energy -= shoot_cost
 		shoot()
 
-	if energy < 200.0:
-		energy = min (energy + 0.1, 200.0)
-
-func hit(dmg) -> void:
-	if not infinite_energy:
-		energy -= dmg
-		if energy <= 0.0:
-			die()
-		
-func die() -> void:
-	energy = 0.0
-	set_physics_process(false)
-	
-	$'Sprite'.modulate = Color(1,0.2,0.2)
-	Events.emit_signal('player_defeated')
+	if energy < energy_max:
+		energy = min (energy + 0.1, energy_max)
 	
 func shoot() -> void:
+	cooldown_timer = 0
+	if not infinite_energy:
+		energy -= shoot_cost
+	shots_fired += 1
+	
 	var p_data:Dictionary = {
 		"velocity": Vector2(),
 		"position": global_position,

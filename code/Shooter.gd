@@ -37,6 +37,7 @@ func _draw():
 func hit(dmg):
 	energy -= dmg
 	if energy <= 0.0:
+		Game.player.destroyed += 1
 		queue_free()
 
 func shoot():
