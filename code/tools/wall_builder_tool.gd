@@ -15,7 +15,8 @@ func make_wall(value):
 			
 		else:
 		
-			color = Color('16161d')
+			color = Color('793d4a')
+			texture = load("res://img/tyr_bg2.png")
 			
 			for n in get_children():
 				remove_child(n)
@@ -26,7 +27,7 @@ func make_wall(value):
 			var line_poly = polygon
 			line_poly.append(polygon[0])
 			line.points = line_poly
-			line.default_color = Color('202030')
+			line.default_color = Color('793d4a')
 			line.name = "WallLine"
 			line.antialiased = true
 			line.set_meta("_edit_lock_", true)
