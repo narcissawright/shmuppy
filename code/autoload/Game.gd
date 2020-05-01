@@ -21,14 +21,17 @@ func _ready() -> void:
 		print(i, ": ", Input.get_joy_name(i))
 		if Input.get_joy_name(i) == 'XInput Gamepad':
 			joyID = i
-	print ("Set primary joystick to ID ", joyID)
-	get_viewport().render_target_clear_mode = 0
+			print ("Set primary joystick to ID ", joyID)
 
 func _input(e) -> void:
 	if Input.is_action_pressed("ui_cancel"):
 		get_tree().quit()
 	if Input.is_action_just_pressed("fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
+	if Input.is_action_just_pressed("cheat") && Game.player.infinite_energy == false:
+		Game.player.energy = Game.player.energy_max
+		Game.player.infinite_energy = true
+		print("Cheating!")
 
 func get_movement_input() -> Vector2:
 	var move_dir := Vector2.ZERO

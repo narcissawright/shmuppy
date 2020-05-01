@@ -1,5 +1,5 @@
 extends KinematicBody2D
-var health:float = 200.0
+var energy:float = 200.0
 var velocity:Vector2
 var max_speed:float = 100.0
 var state = 'disabled'
@@ -32,7 +32,7 @@ func despawn_check() -> void:
 		queue_free()
 
 func hit(dmg) -> void:
-	health -= dmg
-	if health <= 0.0:
+	energy -= dmg
+	if energy <= 0.0:
 		Game.player.destroyed += 1
 		queue_free()

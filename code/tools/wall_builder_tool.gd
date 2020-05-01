@@ -1,8 +1,9 @@
 tool
 extends Polygon2D
-export var run_script = false setget make_wall
+export var run_script = true setget make_wall
 
 func make_wall(value):
+	print("running wall_builder_tool.gd")
 	run_script = !run_script
 	
 	if Engine.editor_hint:

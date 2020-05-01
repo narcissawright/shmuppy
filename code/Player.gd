@@ -5,9 +5,8 @@ const MOVEMENT_INTERPOLATION = 0.2
 const BORDER_SIZE = 10.0
 export var color := Color(0.4,0.25,1)
 
-const infinite_energy = false
+var infinite_energy = false
 
-var screen_velocity:Vector2
 var velocity:Vector2
 var damaged = false
 var energy = 200.0 setget _set_energy
@@ -38,6 +37,14 @@ func die() -> void:
 	set_physics_process(false)
 	$'Sprite'.modulate = Color(1,0.2,0.2)
 	Events.emit_signal('player_defeated')
+
+func _ready() -> void:
+	Events.connect("level_complete", self, 'level_complete')
+
+func level_complete() -> void:
+	print("win!")
+	set_physics_process(false)
+	$'Sprite'.modulate = Color(0.5,0.2,1.0)
 
 func _physics_process(t:float) -> void:
 	cooldown_timer = min(cooldown_timer + 1, shot_cooldown)
@@ -97,7 +104,7 @@ func shoot() -> void:
 			var angle_1 = Vector2()
 			var right_stick_input = Game.get_stick_input('right')
 			if right_stick_input == Vector2.ZERO:
-				angle_1 = (velocity + screen_velocity).normalized()
+				angle_1 = (velocity + Game.screen.velocity).normalized()
 				if angle_1 == Vector2.ZERO:
 					angle_1 = Vector2.RIGHT
 			else:
@@ -112,7 +119,7 @@ func shoot() -> void:
 			var target_node = $'../../../Level/Shooter'
 			var shot_information = {
 				'shooter_location': global_position,
-				'shooter_velocity': velocity + screen_velocity,
+				'shooter_velocity': velocity + Game.screen.velocity,
 				'projectile_speed': PROJECTILE_VELOCITY,
 				'target_location' : target_node.global_position,
 				'target_velocity' : target_node.velocity

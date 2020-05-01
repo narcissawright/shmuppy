@@ -1,6 +1,6 @@
 extends Node2D
 
-const PROJECTILE_VELOCITY = 5.0
+const PROJECTILE_VELOCITY = 6.0
 const SHOT_FREQUENCY = 60.0
 
 export var draw = false
@@ -47,7 +47,7 @@ func shoot():
 		'shooter_velocity': Vector2.ZERO,
 		'projectile_speed': PROJECTILE_VELOCITY,
 		'target_location' : Game.player.global_position,
-		'target_velocity' : Game.player.velocity + Game.player.screen_velocity
+		'target_velocity' : Game.player.velocity + Game.screen.velocity
 	}
 	var p_data:Dictionary = {
 		'velocity' : Game.calc_leading_shot_velocity(shot_information),
