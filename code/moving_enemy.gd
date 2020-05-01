@@ -1,6 +1,6 @@
 extends KinematicBody2D
 var energy:float = 200.0
-var velocity:float = 1.0
+var velocity:float = 1.6
 var max_speed:float = 100.0
 var state = 'disabled'
 var target_location:Vector2
@@ -14,7 +14,7 @@ func _physics_process(t:float) -> void:
 		'enabled':
 			pathfollow.offset += velocity
 			if pathfollow.offset > 460.0:
-				velocity += 0.025
+				velocity += 0.03
 				despawn_check()
 
 func despawn_check() -> void:

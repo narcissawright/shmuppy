@@ -62,16 +62,14 @@ func _physics_process(t:float) -> void:
 	velocity = velocity.linear_interpolate(move_dir * thrust_multiplier, MOVEMENT_INTERPOLATION)
 	var prior_velocity = velocity
 	velocity = move_and_slide(velocity * 60) / 60.0
-
 	for i in range (get_slide_count()):
 		var c = get_slide_collision(i)
+		# touching a wall or enemy; calculate touch damage
 		if c.collider.collision_layer & (Layers.wall | Layers.enemy) > 0:
-			var normal = c.normal.dot(c.travel.normalized())
-			var dmg = prior_velocity.length() * abs(normal)
-			if not infinite_energy: 
-				energy -= dmg
-				if energy <= 0.0:
-					die()
+			var dot = c.normal.dot(c.travel.normalized())
+			if dot < 0.0:
+				var dmg = -dot
+				_set_energy(energy - dmg)
 	
 	if Input.is_action_pressed("shoot") && energy > shoot_cost && cooldown_timer >= shot_cooldown:
 		shoot()
