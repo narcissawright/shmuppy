@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://code/Shooter.gd" type="Script" id=1]
 [ext_resource path="res://img/icon.png" type="Texture" id=2]
@@ -11,9 +11,6 @@
 [ext_resource path="res://code/EnergyPacket.gd" type="Script" id=9]
 [ext_resource path="res://code/end_of_level.gd" type="Script" id=10]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 23, 13 )
-
 [sub_resource type="CircleShape2D" id=2]
 
 [sub_resource type="CircleShape2D" id=3]
@@ -21,54 +18,22 @@ extents = Vector2( 23, 13 )
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 10, 270 )
 
+[sub_resource type="Curve2D" id=5]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 1139.68, 242.083, 55.4003, -19.6953, -55.4003, 19.6953, 768.04, 162.347, -12.8606, -20.577, 12.8606, 20.577, 733.745, 274.663, -138.895, 0, 138.895, 0, 953.233, 320.961, -326, 76, 326, -76, 1785.64, 252.371 )
+}
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 23, 13 )
+
 [node name="Level" type="Node2D"]
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="MovingShip" type="KinematicBody2D" parent="."]
-position = Vector2( 1100, 300 )
-collision_layer = 2
-script = ExtResource( 7 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MovingShip"]
-shape = SubResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Sprite" type="Sprite" parent="MovingShip"]
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="target_location" type="Position2D" parent="MovingShip"]
-position = Vector2( -400, -100 )
-
-[node name="MovingShip2" type="KinematicBody2D" parent="."]
-position = Vector2( 1200, 300 )
-collision_layer = 2
-script = ExtResource( 7 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MovingShip2"]
-shape = SubResource( 1 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Sprite" type="Sprite" parent="MovingShip2"]
-texture = ExtResource( 6 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="target_location" type="Position2D" parent="MovingShip2"]
-position = Vector2( -500, -100 )
-
 [node name="Shooter" type="StaticBody2D" parent="."]
-position = Vector2( 1000, 400 )
+position = Vector2( 1249.99, 409 )
 z_index = 1
 collision_layer = 2
 script = ExtResource( 1 )
@@ -83,7 +48,7 @@ __meta__ = {
 shape = SubResource( 2 )
 
 [node name="Shooter2" type="StaticBody2D" parent="."]
-position = Vector2( 1300, 150 )
+position = Vector2( 1581.99, 136 )
 z_index = 1
 collision_layer = 2
 script = ExtResource( 1 )
@@ -98,7 +63,7 @@ __meta__ = {
 shape = SubResource( 2 )
 
 [node name="Shooter3" type="StaticBody2D" parent="."]
-position = Vector2( 1300, 410 )
+position = Vector2( 1611.99, 396 )
 z_index = 1
 collision_layer = 2
 script = ExtResource( 1 )
@@ -171,7 +136,7 @@ __meta__ = {
 }
 
 [node name="Polygon2D3" type="Polygon2D" parent="Terrain"]
-position = Vector2( 1588.65, 443.538 )
+position = Vector2( 1864.64, 439.538 )
 color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
 polygon = PoolVector2Array( -4.42462, -9.2453, -114.784, -24.2556, -234.973, 11.9304, -322.854, 18.3922, -391.129, 52.8047, -486.42, 33.9681, -552.903, 45.0485, -623.973, 107.565, -616.061, 127.043, 310.258, 108.207, 216.06, 64.9171, 152.917, 46.1565, 76.4856, 2.88388 )
 script = ExtResource( 5 )
@@ -198,7 +163,7 @@ __meta__ = {
 }
 
 [node name="Polygon2D4" type="Polygon2D" parent="Terrain"]
-position = Vector2( 1000, 0 )
+position = Vector2( 1275.99, -4 )
 color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
 polygon = PoolVector2Array( 14.6899, 67.3454, 70.4655, 97.2738, 135.764, 105.436, 180.656, 86.3907, 210.584, 67.3454, 258.198, 68.7058, 308.532, 97.2738, 352.064, 125.842, 401.037, 125.842, 452.732, 99.9945, 469.056, 49.6605, 456.813, 18.3718, -7.07611, 21.0926 )
 script = ExtResource( 5 )
@@ -225,7 +190,7 @@ __meta__ = {
 }
 
 [node name="Polygon2D5" type="Polygon2D" parent="Terrain"]
-position = Vector2( 322.41, 134.678 )
+position = Vector2( 499.405, 134.678 )
 color = Color( 0.0862745, 0.0862745, 0.113725, 1 )
 polygon = PoolVector2Array( 526.135, 243.87, 500.287, 292.844, 532.936, 344.538, 622.721, 366.304, 629.523, 341.817, 547.901, 318.691, 530.216, 286.042, 546.54, 252.032 )
 script = ExtResource( 5 )
@@ -262,7 +227,7 @@ __meta__ = {
 [node name="BGColor" type="ColorRect" parent="ParallaxBackground/ParallaxLayer"]
 modulate = Color( 0.054902, 0.105882, 0.180392, 1 )
 margin_top = 40.0
-margin_right = 1862.0
+margin_right = 2000.0
 margin_bottom = 540.0
 color = Color( 0.482353, 0.482353, 0.482353, 1 )
 __meta__ = {
@@ -273,7 +238,7 @@ __meta__ = {
 [node name="BGTex" type="TextureRect" parent="ParallaxBackground/ParallaxLayer"]
 modulate = Color( 0.054902, 0.105882, 0.180392, 1 )
 margin_top = 40.0
-margin_right = 1862.0
+margin_right = 2000.0
 margin_bottom = 540.0
 texture = ExtResource( 2 )
 stretch_mode = 2
@@ -283,7 +248,7 @@ __meta__ = {
 }
 
 [node name="EnergyPacket" type="Area2D" parent="."]
-position = Vector2( 600, 300 )
+position = Vector2( 1064.07, 420.874 )
 collision_layer = 16
 script = ExtResource( 9 )
 
@@ -294,12 +259,63 @@ shape = SubResource( 3 )
 texture = ExtResource( 8 )
 
 [node name="Exit" type="Area2D" parent="."]
-position = Vector2( 2200, 290 )
+position = Vector2( 2560, 290 )
 collision_layer = 8
 collision_mask = 8
 script = ExtResource( 10 )
 
 [node name="ExitTrigger" type="CollisionShape2D" parent="Exit"]
 shape = SubResource( 4 )
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2( 121.348, 0 )
+curve = SubResource( 5 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2( 1139.68, 242.083 )
+rotation = -2.25364
+rotate = false
+loop = false
+
+[node name="MovingShip2" type="KinematicBody2D" parent="Path2D/PathFollow2D"]
+rotation = 2.25364
+collision_layer = 2
+script = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D/MovingShip2"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D/MovingShip2"]
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PathFollow2D2" type="PathFollow2D" parent="Path2D"]
+position = Vector2( 1055.73, 217.061 )
+rotation = -2.25364
+offset = 87.73
+rotate = false
+loop = false
+
+[node name="MovingShip2" type="KinematicBody2D" parent="Path2D/PathFollow2D2"]
+rotation = 2.25364
+collision_layer = 2
+script = ExtResource( 7 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Path2D/PathFollow2D2/MovingShip2"]
+shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D2/MovingShip2"]
+texture = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
 [connection signal="body_entered" from="EnergyPacket" to="EnergyPacket" method="_on_EnergyPacket_body_entered"]
 [connection signal="area_entered" from="Exit" to="Exit" method="_on_Exit_area_entered"]

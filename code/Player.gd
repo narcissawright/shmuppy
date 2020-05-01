@@ -42,7 +42,6 @@ func _ready() -> void:
 	Events.connect("level_complete", self, 'level_complete')
 
 func level_complete() -> void:
-	print("win!")
 	set_physics_process(false)
 	$'Sprite'.modulate = Color(0.5,0.2,1.0)
 
