@@ -29,7 +29,25 @@ func _input(e) -> void:
 		get_tree().quit()
 	if Input.is_action_just_pressed("fullscreen"):
 		OS.window_fullscreen = !OS.window_fullscreen
+
+func get_movement_input() -> Vector2:
+	var move_dir := Vector2.ZERO
+	
+	if Input.is_action_pressed("up"):
+		move_dir.y -= 1
+	if Input.is_action_pressed("down"):
+		move_dir.y += 1
+	if Input.is_action_pressed("left"):
+		move_dir.x -= 1
+	if Input.is_action_pressed("right"):
+		move_dir.x += 1
 		
+	if move_dir != Vector2.ZERO:
+		move_dir = move_dir.normalized()
+	else:
+		move_dir = get_stick_input('left')
+	return move_dir
+
 func get_stick_input(which:String) -> Vector2:
 	var axes = Vector2()
 	if which == "left":

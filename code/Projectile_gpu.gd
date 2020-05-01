@@ -1,18 +1,17 @@
 extends Node2D
 
-var enabled:bool = false
+var state:String = 'disabled' # 'enabled', 'hit'
 var radius:float
 var color:Color
-var seek_amount:float
+var seek_amount:float # unused
 var velocity:Vector2
-var ownership:String
-var bullet_index:int
+var ownership:String # 'player', 'enemy'
+var bullet_index:int # index for BulletManager
 
 var shape:CircleShape2D
-var mask:int = 0
+var mask:int = 0 # which layers are we checking for collisions
 var query:Physics2DShapeQueryParameters
 
-onready var tween = $'Tween'
 onready var collision_fx = $'collisionfx'
 
 func _ready() -> void:
@@ -20,15 +19,14 @@ func _ready() -> void:
 	set_process(false)
 
 func disable() -> void:
-	tween.stop_all()
 	collision_fx.emitting = false
-	enabled = false
+	state = 'disabled'
 	set_process(false)
 	BulletManager.add_to_disabled(bullet_index)
 	hide()
 
 func enable() -> void:
-	enabled = true
+	state = 'enabled'
 	self.modulate = Color(1,1,1,1)
 	show()
 	
@@ -60,30 +58,36 @@ func _process(t: float) -> void:
 	# due to velocity remaining constant so far
 	# material.set_shader_param("velocity",velocity)
 	
-	if not Game.screen.has(position, 100):
-		disable()
-		return
-	
-	query.transform = global_transform
-	var space_state = get_world_2d().get_direct_space_state()
-	var result = space_state.cast_motion(query) 
-	if result.size() > 0:
-		if result[1] == 1:
-			# projectile did not hit anything
-			position += velocity
-		else:
-			# projectile hit something
-			position += velocity * result[1]
-			query.transform = transform
-			hit(space_state)
-	else:
-		# projectile cannot move, burst immediately
-		hit(space_state)
+	match state:
+		'enabled':
+			if not Game.screen.has(position, 100):
+				disable()
+				return
+			
+			query.transform = global_transform
+			var space_state = get_world_2d().get_direct_space_state()
+			var result = space_state.cast_motion(query) 
+			if result.size() > 0:
+				if result[1] == 1:
+					# projectile did not hit anything
+					position += velocity
+				else:
+					# projectile hit something
+					position += velocity * result[1]
+					material.set_shader_param("velocity", velocity * result[1])
+					query.transform = transform
+					hit(space_state)
+			else:
+				# projectile cannot move, burst immediately
+				material.set_shader_param("velocity",0.0)
+				hit(space_state)
+		'hit':
+			material.set_shader_param("velocity",0.0)
+			radius = radius * 0.92
+			material.set_shader_param("radius",radius)
 
 func hit(space_state):
-	material.set_shader_param("velocity",0.0)
-	
-	set_process(false)
+	state = 'hit'
 	collision_fx.activate(velocity)
 	
 	var collisions = space_state.intersect_shape(query)
@@ -92,10 +96,3 @@ func hit(space_state):
 		if not collisions[i].collider.collision_layer & Layers.wall == Layers.wall:
 			# if not wall, send hit
 			collisions[i].collider.hit(20.0)
-	
-	fadeout()
-	
-func fadeout() -> void:
-	tween.interpolate_property(self, "modulate", 
-		Color(1,1,1,1), Color(1,1,1,0), 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	tween.start()

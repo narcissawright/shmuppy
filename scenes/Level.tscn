@@ -20,15 +20,21 @@ __meta__ = {
 }
 
 [node name="MovingShip" type="KinematicBody2D" parent="."]
-position = Vector2( 700, 300 )
+position = Vector2( 1100, 300 )
 collision_layer = 2
 script = ExtResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MovingShip"]
 shape = SubResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Sprite" type="Sprite" parent="MovingShip"]
 texture = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Shooter" type="StaticBody2D" parent="."]
 position = Vector2( 1000, 270 )

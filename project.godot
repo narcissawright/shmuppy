@@ -26,6 +26,11 @@ Events="*res://code/autoload/Events.gd"
 Layers="*res://code/autoload/Layers.gd"
 BulletManager="*res://code/autoload/BulletManager.gd"
 
+[debug]
+
+gdscript/warnings/unused_variable=false
+gdscript/warnings/unused_argument=false
+
 [display]
 
 window/size/width=960

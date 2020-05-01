@@ -78,5 +78,3 @@ explosiveness = 0.75
 process_material = SubResource( 2 )
 texture = ExtResource( 2 )
 script = ExtResource( 5 )
-
-[node name="Tween" type="Tween" parent="."]

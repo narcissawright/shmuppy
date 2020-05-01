@@ -14,7 +14,7 @@ var energy = 200.0
 var shoot_cost = 2.0
 var radius = 5.0
 
-var projectile = preload("res://scenes/Projectile_castmotion.tscn")
+var projectile = preload("res://scenes/Projectile_gpu.tscn")
 
 var shot_cooldown = 10 # frames per shot
 var cooldown_timer = 0
@@ -25,21 +25,8 @@ func _physics_process(t:float) -> void:
 	cooldown_timer = min(cooldown_timer + 1, shot_cooldown)
 	
 	# Movement
-	var move_dir := Vector2.ZERO
-	
-	if Input.is_action_pressed("up"):
-		move_dir.y -= 1
-	if Input.is_action_pressed("down"):
-		move_dir.y += 1
-	if Input.is_action_pressed("left"):
-		move_dir.x -= 1
-	if Input.is_action_pressed("right"):
-		move_dir.x += 1
-		
-	if move_dir != Vector2.ZERO:
-		move_dir = move_dir.normalized() * MOVE_SPEED
-	else:
-		move_dir = Game.get_stick_input('left') * MOVE_SPEED
+	var move_dir:Vector2 = Game.get_movement_input()
+	move_dir *= MOVE_SPEED
 	
 	var thrust_multiplier = 1.0
 	var thrust_cost = 0.1 * move_dir.length()
@@ -54,7 +41,7 @@ func _physics_process(t:float) -> void:
 
 	for i in range (get_slide_count()):
 		var c = get_slide_collision(i)
-		if c.collider.collision_layer & Layers.wall > 0:
+		if c.collider.collision_layer & (Layers.wall | Layers.enemy) > 0:
 			var normal = c.normal.dot(c.travel.normalized())
 			var dmg = prior_velocity.length() * abs(normal)
 			if not infinite_energy: 
