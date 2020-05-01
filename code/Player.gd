@@ -5,7 +5,7 @@ const MOVEMENT_INTERPOLATION = 0.2
 const BORDER_SIZE = 10.0
 export var color := Color(0.4,0.25,1)
 
-const infinite_energy = true
+const infinite_energy = false
 
 var screen_velocity:Vector2
 var velocity:Vector2
@@ -19,7 +19,7 @@ var projectile = preload("res://scenes/Projectile_castmotion.tscn")
 var shot_cooldown = 10 # frames per shot
 var cooldown_timer = 0
 
-const PROJECTILE_VELOCITY = 5.0
+const PROJECTILE_VELOCITY = 10.0
 
 func _physics_process(t:float) -> void:
 	cooldown_timer = min(cooldown_timer + 1, shot_cooldown)
@@ -71,7 +71,7 @@ func _physics_process(t:float) -> void:
 	if energy < 200.0:
 		energy = min (energy + 0.1, 200.0)
 
-func damaged(dmg) -> void:
+func hit(dmg) -> void:
 	if not infinite_energy:
 		energy -= dmg
 		if energy <= 0.0:
@@ -93,32 +93,36 @@ func shoot() -> void:
 		"color": color
 	}
 
-	var aim_type = "2stick"
+	var aim_type = "forward"
 	
-	if aim_type == "2stick":
-		var angle_1 = Vector2()
-		var right_stick_input = Game.get_stick_input('right')
-		if right_stick_input == Vector2.ZERO:
-			angle_1 = (velocity + screen_velocity).normalized()
-			if angle_1 == Vector2.ZERO:
-				angle_1 = Vector2.RIGHT
-		else:
-			angle_1 = right_stick_input.normalized()
-		var shot_velocity = angle_1.normalized() * PROJECTILE_VELOCITY
-		shot_velocity += velocity / 2.0
-		if shot_velocity.length() < PROJECTILE_VELOCITY:
-			shot_velocity = shot_velocity.normalized() * PROJECTILE_VELOCITY
-		p_data.velocity = shot_velocity
+	match aim_type:
+		"forward":
+			p_data.velocity = Vector2.RIGHT * PROJECTILE_VELOCITY;
 		
-	elif aim_type == 'automatic':
-		var target_node = $'../../../Level/Shooter'
-		var shot_information = {
-			'shooter_location': global_position,
-			'shooter_velocity': velocity + screen_velocity,
-			'projectile_speed': PROJECTILE_VELOCITY,
-			'target_location' : target_node.global_position,
-			'target_velocity' : target_node.velocity
-		}
-		p_data.velocity = Game.calc_leading_shot_velocity(shot_information)
+		"2stick":
+			var angle_1 = Vector2()
+			var right_stick_input = Game.get_stick_input('right')
+			if right_stick_input == Vector2.ZERO:
+				angle_1 = (velocity + screen_velocity).normalized()
+				if angle_1 == Vector2.ZERO:
+					angle_1 = Vector2.RIGHT
+			else:
+				angle_1 = right_stick_input.normalized()
+			var shot_velocity = angle_1.normalized() * PROJECTILE_VELOCITY
+			shot_velocity += velocity / 2.0
+			if shot_velocity.length() < PROJECTILE_VELOCITY:
+				shot_velocity = shot_velocity.normalized() * PROJECTILE_VELOCITY
+			p_data.velocity = shot_velocity
+	
+		"automatic":
+			var target_node = $'../../../Level/Shooter'
+			var shot_information = {
+				'shooter_location': global_position,
+				'shooter_velocity': velocity + screen_velocity,
+				'projectile_speed': PROJECTILE_VELOCITY,
+				'target_location' : target_node.global_position,
+				'target_velocity' : target_node.velocity
+			}
+			p_data.velocity = Game.calc_leading_shot_velocity(shot_information)
 	
 	BulletManager.spawn_bullet(p_data)

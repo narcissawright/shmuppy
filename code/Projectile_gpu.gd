@@ -6,7 +6,6 @@ var color:Color
 var seek_amount:float
 var velocity:Vector2
 var ownership:String
-var dmg = 25.0
 var bullet_index:int
 
 var shape:CircleShape2D
@@ -76,17 +75,23 @@ func _process(t: float) -> void:
 			# projectile hit something
 			position += velocity * result[1]
 			query.transform = transform
-			hit()
+			hit(space_state)
 	else:
 		# projectile cannot move, burst immediately
-		hit()
+		hit(space_state)
 
-func hit():
+func hit(space_state):
 	material.set_shader_param("velocity",0.0)
+	
 	set_process(false)
 	collision_fx.activate(velocity)
-	#if col.collider.collision_layer & Layers.player == Layers.player:
-	#	Game.player.damaged(dmg)
+	
+	var collisions = space_state.intersect_shape(query)
+	
+	for i in range (collisions.size()):
+		if not collisions[i].collider.collision_layer & Layers.wall == Layers.wall:
+			# if not wall, send hit
+			collisions[i].collider.hit(20.0)
 	
 	fadeout()
 	
