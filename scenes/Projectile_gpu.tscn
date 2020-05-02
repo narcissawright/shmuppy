@@ -4,7 +4,7 @@
 [ext_resource path="res://img/star_1.png" type="Texture" id=2]
 [ext_resource path="res://code/collisionfx.gd" type="Script" id=5]
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform vec2 velocity;
@@ -18,7 +18,7 @@ void vertex() {
 	// maybe move this to CPU
 	projectile_pos.x = WORLD_MATRIX[3][0]; // get projectile position from matrix
 	projectile_pos.y = WORLD_MATRIX[3][1];
-	projectile_prior = projectile_pos - velocity;
+	projectile_prior = projectile_pos - (velocity * 1.75);
 }
 
 float minimum_distance(vec2 v, vec2 w, vec2 p) {
@@ -36,27 +36,29 @@ void fragment() {
 	pixel_pos.y = 540.0 - pixel_pos.y; // y0 at top of screen instead
 	
 	float dist = minimum_distance(projectile_pos, projectile_prior, pixel_pos);
+	float dist2 = length(projectile_pos - pixel_pos);
+	dist = mix(dist, dist2, 0.2);
 	float delta = fwidth(dist);
 	float alpha = smoothstep(radius-delta, radius, dist);
 	delta = radius;
-	float intensity = smoothstep(0, radius * 0.667, dist);
+	float intensity = smoothstep(0, radius * 0.8, dist);
 	vec3 new_color = mix(vec3(1,1,1), passed_color.rgb, intensity);
 	COLOR = mix(vec4(new_color,1.0), vec4(new_color,0.0), alpha);
 	
 }"
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/velocity = null
 shader_param/passed_color = null
 shader_param/radius = null
 
-[sub_resource type="ImageTexture" id=5]
+[sub_resource type="ImageTexture" id=3]
 flags = 0
 flags = 0
 size = Vector2( 128, 128 )
 
-[sub_resource type="ParticlesMaterial" id=2]
+[sub_resource type="ParticlesMaterial" id=4]
 flag_disable_z = true
 spread = 30.0
 gravity = Vector3( 0, 0, 0 )
@@ -65,8 +67,8 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 
 [node name="Projectile" type="Sprite"]
-material = SubResource( 4 )
-texture = SubResource( 5 )
+material = SubResource( 2 )
+texture = SubResource( 3 )
 script = ExtResource( 1 )
 
 [node name="collisionfx" type="Particles2D" parent="."]
@@ -75,6 +77,6 @@ amount = 4
 lifetime = 0.2
 one_shot = true
 explosiveness = 0.75
-process_material = SubResource( 2 )
+process_material = SubResource( 4 )
 texture = ExtResource( 2 )
 script = ExtResource( 5 )

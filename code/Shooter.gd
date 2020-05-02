@@ -1,7 +1,7 @@
 extends Node2D
 
 const PROJECTILE_VELOCITY = 6.0
-const SHOT_FREQUENCY = 60.0
+const SHOT_FREQUENCY = 15.0
 
 export var draw = false
 
@@ -51,7 +51,7 @@ func shoot():
 	}
 	var p_data:Dictionary = {
 		'velocity' : Game.calc_leading_shot_velocity(shot_information),
-		'radius' : 4.0,
+		'radius' : 3.5,
 		'color' : Color(0.2,0.7,0.1),
 		'seek_amount' : 0.0,
 		'ownership' : 'enemy',

@@ -83,9 +83,10 @@ func shoot() -> void:
 		energy -= shoot_cost
 	shots_fired += 1
 	
+	var double_shot_offset = Vector2(0,3)
 	var p_data:Dictionary = {
 		"velocity": Vector2(),
-		"position": global_position,
+		"position": global_position - double_shot_offset,
 		"ownership": "player",
 		"radius": 3.0,
 		"color": color
@@ -123,4 +124,6 @@ func shoot() -> void:
 			}
 			p_data.velocity = Game.calc_leading_shot_velocity(shot_information)
 	
+	BulletManager.spawn_bullet(p_data)
+	p_data.position = global_position + double_shot_offset
 	BulletManager.spawn_bullet(p_data)
