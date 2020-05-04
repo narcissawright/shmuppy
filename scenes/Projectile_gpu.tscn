@@ -14,6 +14,8 @@ uniform float radius;
 varying vec2 projectile_pos;
 varying vec2 projectile_prior;
 
+const vec3 warmth = vec3(0.15, 0.025, -0.1);
+
 void vertex() {
 	// maybe move this to CPU
 	projectile_pos.x = WORLD_MATRIX[3][0]; // get projectile position from matrix
@@ -34,17 +36,16 @@ void fragment() {
 	COLOR = vec4(0,0,0,0);
 	vec2 pixel_pos = FRAGCOORD.xy; // pixel position on screen
 	pixel_pos.y = 540.0 - pixel_pos.y; // y0 at top of screen instead
-	
 	float dist = minimum_distance(projectile_pos, projectile_prior, pixel_pos);
 	float dist2 = length(projectile_pos - pixel_pos);
 	dist = mix(dist, dist2, 0.2);
 	float delta = fwidth(dist);
 	float alpha = smoothstep(radius-delta, radius, dist);
-	delta = radius;
-	float intensity = smoothstep(0, radius * 0.8, dist);
-	vec3 new_color = mix(vec3(1,1,1), passed_color.rgb, intensity);
+	float intensity = smoothstep(radius * 0.3, radius * 0.6, dist);
+	vec3 inside = passed_color.rgb + vec3(0.45,0.45,0.45) + warmth;
+	vec3 outside = passed_color.rgb - warmth;
+	vec3 new_color = mix(inside, outside, intensity);
 	COLOR = mix(vec4(new_color,1.0), vec4(new_color,0.0), alpha);
-	
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
