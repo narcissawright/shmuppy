@@ -1,2 +1,4 @@
 # shmuppy
- godot shmup 2020
+ godot shmup experiment.
+ 
+ project is basically dead but i had fun.
